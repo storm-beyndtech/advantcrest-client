@@ -4,7 +4,7 @@ import heroAsset from '../assets/hero.svg';
 const Hero: React.FC = () => {
   return (
     <section
-      className="relative min-h-screen bg-no-repeat bg-center"
+      className="relative min-h-screen max-h-[1000px] bg-no-repeat bg-center"
       id="heroSection"
     >
       <div className="max-ctn h-full max-md:px-5 max-md:pb-10 pt-40 flex flex-wrap justify-between items-center gap-20">
