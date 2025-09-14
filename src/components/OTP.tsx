@@ -386,124 +386,163 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
   const backLink = getBackLink();
 
   return (
-    <div className="min-h-screen grid grid-cols-5 overflow-hidden bg-gray-50 dark:bg-bodydark">
+    <div className="min-h-screen flex bg-white dark:bg-gray-950">
       {/* Left Side - Marketing Content */}
-      <div className="md:col-span-2 relative bg-bodydark hidden md:flex flex-col justify-center">
-        <div className="absolute top-0 left-0 z-[4] w-full h-full bg-gradient-to-b from-brandblue/30 via-brandblue/10 to-bodydark"></div>
-
-        <div className="absolute z-10 top-0 left-0 pt-10 lg:pl-10 pl-5 flex flex-col gap-6">
-          {/* Logo Placeholder */}
-          <Link to="/" className="">
-            <img src={logo} alt="logo" className="w-35" />
-          </Link>
-
-          <p className="text-gray-300 text-sm mt-10 leading-6 max-w-80">
-            Protecting your account with extra security verification. Your funds
-            and data remain safe with us.
-          </p>
-
-          <motion.div className="flex" animate={bounceAnimation}>
-            <img
-              src="https://protradercopy.com/static/images/about/startingright.png"
-              alt="Otp"
-              className="w-[100%]"
-            />
-          </motion.div>
+      <div className="hidden lg:flex lg:w-1/2 bg-gray-50 dark:bg-emerald-950/50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/5 to-cyan-600/10"></div>
+        <div className="relative z-10 flex flex-col justify-center px-12 py-16">
+          <div className="mb-8">
+            <Link to="/" className="inline-block">
+              <img src={logo} alt="logo" className="h-12 w-auto filter brightness-0 dark:filter-none dark:brightness-100" />
+            </Link>
+          </div>
+          
+          <div className="space-y-6">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+              Secure Your Account
+              <span className="block text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">
+                Verification
+              </span>
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-md">
+              Protecting your account with extra security verification. Your funds and data remain safe with us.
+            </p>
+          </div>
+          
+          <div className="mt-12 grid grid-cols-1 gap-4 text-sm">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <span className="text-gray-700 dark:text-gray-300">Two-factor authentication</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <span className="text-gray-700 dark:text-gray-300">Instant code delivery</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <span className="text-gray-700 dark:text-gray-300">Secure verification process</span>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Right Side - OTP Verification Form */}
-      <div className="md:col-span-3 col-span-5 p-8 space-y-6">
-        <div className="flex items-center justify-end gap-3">
-          <Link to={backLink} className="text-sm font-semibold text-brandblue">
-            Back to{' '}
-            {pageType === 'register-verification'
-              ? 'Registration'
-              : pageType === 'reset-password'
-                ? 'Reset Password'
-                : 'Login'}
-          </Link>
-
-          <div className="w-[68px] h-[24px] py-1 relative bg-gray-50 rounded">
-            <div className="gtranslate_wrapper absolute left-1 top-[0px]"></div>
-          </div>
-          <DarkModeSwitcher />
-        </div>
-        <div className="w-full max-w-100 mx-auto">
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
-            {pageContent.title}
-          </h2>
-          <p className="text-gray-500 text-sm dark:text-gray-500 mb-6">
-            {pageContent.description}
-          </p>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* OTP Input Fields */}
-            <div className="flex justify-center gap-2 md:gap-4">
-              {Array(otpLength)
-                .fill(0)
-                .map((_, index) => (
-                  <input
-                    key={index}
-                    ref={(ref) => (inputRefs.current[index] = ref)}
-                    type="text"
-                    maxLength={1}
-                    value={otp[index]}
-                    onChange={(e) => handleChange(e, index)}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    onPaste={index === 0 ? handlePaste : undefined}
-                    className={`w-12 h-12 md:w-14 md:h-14 border text-center text-xl rounded-md
-                    ${
-                      index === activeInput
-                        ? 'border-blue-500 ring-2 ring-blue-200'
-                        : 'border-gray-300 dark:border-gray-700'
-                    }
-                    focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200
-                    bg-white dark:bg-transparent text-gray-900 dark:text-white`}
-                  />
-                ))}
+      <div className="flex-1 lg:w-1/2 flex items-center justify-center p-8">
+        <div className="w-full max-w-md space-y-8">
+          <div className="flex justify-between items-center">
+            <div className="lg:hidden">
+              <Link to="/" className="inline-block">
+                <img src={logo} alt="logo" className="h-8 w-auto filter brightness-0 dark:filter-none dark:brightness-100" />
+              </Link>
             </div>
+            <div className="flex items-center space-x-4">
+              <Link to={backLink} className="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                Back to {pageType === 'register-verification' ? 'Registration' : pageType === 'reset-password' ? 'Reset Password' : 'Login'}
+              </Link>
+              <DarkModeSwitcher />
+            </div>
+          </div>
 
-            {/* Resend Code */}
-            <div className="text-center">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Didn't receive a code?{' '}
-                {canResend ? (
-                  <button
-                    type="button"
-                    onClick={handleResendOTP}
-                    className="text-brandblue hover:underline font-medium"
-                  >
-                    Resend Code
-                  </button>
-                ) : (
-                  <span className="text-gray-500">
-                    Resend in <span className="font-medium">{countdown}s</span>
-                  </span>
-                )}
+          <div className="space-y-6">
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+                {pageContent.title}
+              </h2>
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                {pageContent.description}
               </p>
             </div>
 
-            {/* Alert Messages */}
-            {submitStatus === 'success' && (
-              <Alert type="success" message={pageContent.successMessage} />
-            )}
-            {submitStatus === 'error' && (
-              <Alert
-                type="error"
-                message={errorMessage || pageContent.errorMessage}
-              />
-            )}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* OTP Input Fields */}
+              <div className="flex justify-center gap-3">
+                {Array(otpLength)
+                  .fill(0)
+                  .map((_, index) => (
+                    <input
+                      key={index}
+                      ref={(ref) => (inputRefs.current[index] = ref)}
+                      type="text"
+                      maxLength={1}
+                      value={otp[index]}
+                      onChange={(e) => handleChange(e, index)}
+                      onKeyDown={(e) => handleKeyDown(e, index)}
+                      onPaste={index === 0 ? handlePaste : undefined}
+                      className={`w-12 h-12 md:w-14 md:h-14 border text-center text-xl rounded-lg transition-colors duration-200
+                      ${
+                        index === activeInput
+                          ? 'border-blue-500 ring-2 ring-blue-500/20'
+                          : 'border-gray-300 dark:border-gray-600'
+                      }
+                      focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20
+                      bg-white dark:bg-gray-800 text-gray-900 dark:text-white`}
+                    />
+                  ))}
+              </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="font-semibold w-full hover:bg-blue-600 bg-brandblue text-white py-2 rounded-md transition-colors duration-300 flex items-center justify-center"
-            >
-              {isSubmitting ? <span>Verifying...</span> : 'Verify Code'}
-            </button>
-          </form>
+              {/* Resend Code */}
+              <div className="text-center">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Didn't receive a code?{' '}
+                  {canResend ? (
+                    <button
+                      type="button"
+                      onClick={handleResendOTP}
+                      className="text-blue-600 hover:text-blue-500 transition-colors font-medium"
+                    >
+                      Resend Code
+                    </button>
+                  ) : (
+                    <span className="text-gray-500">
+                      Resend in <span className="font-medium">{countdown}s</span>
+                    </span>
+                  )}
+                </p>
+              </div>
+
+              {/* Alert Messages */}
+              {submitStatus === 'success' && (
+                <Alert type="success" message={pageContent.successMessage} />
+              )}
+              {submitStatus === 'error' && (
+                <Alert
+                  type="error"
+                  message={errorMessage || pageContent.errorMessage}
+                />
+              )}
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Verifying...</span>
+                  </div>
+                ) : (
+                  'Verify Code'
+                )}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
