@@ -5,7 +5,6 @@ import Footer from '@/components/Footer';
 import Hero from '@/components/Hero';
 import {
   AboutSection,
-  CTASection,
   HowItWorks,
   InvestmentRationale,
   MobileApp,
@@ -17,7 +16,6 @@ import {
 } from '@/components/HomeSecs';
 import LiquiditySlides from '@/components/liquiditySlides/LiquiditySlides';
 import NavBar from '@/components/Navbar';
-import Pricing from '@/components/pricing/Pricing';
 import Reviews from '@/components/Reviews';
 import Sec5 from '@/components/Sec5';
 import Sec9 from '@/components/Sec9';
@@ -37,9 +35,7 @@ export default function Home() {
       <TopTraders />
       <TrustSecurity />
       <MobileApp />
-      <Pricing />
       <Support />
-      <CTASection />
       <FeaturesSection />
       <Sec5 />
       <Reviews />

@@ -125,10 +125,36 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Subscribe</h3>
-            <p className="text-trading-gray mb-4">
-              Stay updated with the latest trading insights and platform news.
-            </p>
+            <h3 className="text-white font-semibold mb-4">Contact Info</h3>
+            <div className="space-y-3 mb-6">
+              <div>
+                <p className="text-sm text-slate-400 mb-1">London Office:</p>
+                <p className="text-trading-gray text-sm">
+                  24/25th Floor, One Canada Square,<br />
+                  Canary Wharf, London, E14 5AB,<br />
+                  United Kingdom
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-slate-400 mb-1">US Office:</p>
+                <p className="text-trading-gray text-sm">
+                  85/ 88 Willow Road<br />
+                  Menlo Park, California 94025<br />
+                  USA
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-slate-400 mb-1">Phone:</p>
+                <div className="space-y-1">
+                  <a href="tel:+19299335402" className="text-trading-gray hover:text-white text-sm block">
+                    +1 929 933 5402
+                  </a>
+                  <a href="tel:+16072029084" className="text-trading-gray hover:text-white text-sm block">
+                    +1 607 202 9084
+                  </a>
+                </div>
+              </div>
+            </div>
             <div className="flex">
               <input
                 type="email"

@@ -1032,37 +1032,3 @@ export const Support = () => {
     </section>
   );
 };
-
-// CTA Section
-export const CTASection = () => {
-  const animation = useScrollAnimation();
-
-  return (
-    <section className="py-20 bg-slate-950">
-      <div className="container mx-auto px-6">
-        <motion.div
-          ref={animation.ref}
-          initial={animation.initial}
-          animate={animation.animate}
-          transition={animation.transition}
-          className="text-center max-w-4xl mx-auto"
-        >
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 text-slate-300">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-5 h-5 text-amber-300" />
-              <span>No minimum deposit</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-5 h-5 text-amber-300" />
-              <span>Start with $50</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-5 h-5 text-amber-300" />
-              <span>Free demo account</span>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
