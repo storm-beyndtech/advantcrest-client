@@ -89,7 +89,7 @@ export default function AdminSidebar({
                 to="/"
                 className={`text-xs group relative flex items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black`}
               >
-                <Globe strokeWidth={1.5} className="text-green-400 text-xl" />
+                <Globe strokeWidth={1.5} className="text-sky-400 text-xl" />
                 Main Website
               </NavLink>
             </li>
@@ -101,7 +101,7 @@ export default function AdminSidebar({
                   pathname === '/admin' && 'bg-black'
                 }`}
               >
-                <Home strokeWidth={1.5} className="text-green-400 text-xl" />
+                <Home strokeWidth={1.5} className="text-sky-400 text-xl" />
                 Dashboard
               </NavLink>
             </li>
@@ -115,10 +115,7 @@ export default function AdminSidebar({
                   pathname.includes('trades') && 'bg-black'
                 }`}
               >
-                <BarChart2
-                  strokeWidth={1.5}
-                  className="text-green-400 text-xl"
-                />
+                <BarChart2 strokeWidth={1.5} className="text-sky-400 text-xl" />
                 Manage Trades
               </NavLink>
             </li>
@@ -130,7 +127,7 @@ export default function AdminSidebar({
                   pathname.includes('trader') && 'bg-black'
                 }`}
               >
-                <User strokeWidth={1.5} className="text-green-400 text-xl" />
+                <User strokeWidth={1.5} className="text-sky-400 text-xl" />
                 Manage Trader
               </NavLink>
             </li>
@@ -139,7 +136,7 @@ export default function AdminSidebar({
             <SidebarDropdown
               title="Users"
               icon={
-                <Users strokeWidth={1.5} className="text-green-400 text-xl" />
+                <Users strokeWidth={1.5} className="text-sky-400 text-xl" />
               }
               links={[
                 { label: 'Active Users', href: 'active-users' },
@@ -153,7 +150,7 @@ export default function AdminSidebar({
               icon={
                 <ArrowUpFromLine
                   strokeWidth={1.5}
-                  className="text-green-400 text-xl"
+                  className="text-sky-400 text-xl"
                 />
               }
               links={[
@@ -168,7 +165,7 @@ export default function AdminSidebar({
               icon={
                 <ArrowDownFromLine
                   strokeWidth={1.5}
-                  className="text-green-400 text-xl"
+                  className="text-sky-400 text-xl"
                 />
               }
               links={[
@@ -189,7 +186,7 @@ export default function AdminSidebar({
               >
                 <ShieldAlert
                   strokeWidth={1.5}
-                  className="text-green-400 text-xl"
+                  className="text-sky-400 text-xl"
                 />
                 Kyc
               </NavLink>
@@ -206,7 +203,7 @@ export default function AdminSidebar({
               >
                 <MessageSquare
                   strokeWidth={1.5}
-                  className="text-green-400 text-xl"
+                  className="text-sky-400 text-xl"
                 />
                 Mails
               </NavLink>
@@ -219,10 +216,7 @@ export default function AdminSidebar({
                   pathname.includes('settings') && 'bg-black'
                 }`}
               >
-                <Settings
-                  strokeWidth={1.5}
-                  className="text-green-400 text-xl"
-                />
+                <Settings strokeWidth={1.5} className="text-sky-400 text-xl" />
                 Settings
               </NavLink>
             </li>
@@ -231,7 +225,7 @@ export default function AdminSidebar({
               className="cursor-pointer text-xs group relative flex items-center gap-2.5 rounded-sm py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black"
               onClick={() => logout()}
             >
-              <LogOut strokeWidth={1.5} className="text-green-400 text-xl" />
+              <LogOut strokeWidth={1.5} className="text-sky-400 text-xl" />
               Sign out
             </li>
           </ul>
