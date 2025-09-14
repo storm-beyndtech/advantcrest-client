@@ -7,17 +7,12 @@ import {
   Users,
   Share2,
   Eye,
-  Zap,
   CheckCircle,
   ArrowRight,
   Star,
-  Clock,
   Globe,
   MessageSquare,
-  PieChart,
-  Activity,
-  BookOpen,
-  Smartphone
+  Activity
 } from 'lucide-react';
 
 // Hero Section

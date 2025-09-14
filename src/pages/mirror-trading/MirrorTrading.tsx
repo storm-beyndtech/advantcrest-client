@@ -3,12 +3,9 @@ import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 import { 
   Copy,
-  TrendingUp,
-  Users,
   Shield,
   BarChart3,
   Clock,
-  DollarSign,
   Star,
   ArrowRight,
   CheckCircle

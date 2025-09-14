@@ -9,7 +9,6 @@ import {
   BarChart3,
   TrendingUp,
   Shield,
-  Zap,
   CheckCircle,
   ArrowRight,
   Star,
