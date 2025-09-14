@@ -12,7 +12,8 @@ import {
   Star,
   Globe,
   MessageSquare,
-  Activity
+  Activity,
+  Zap
 } from 'lucide-react';
 
 // Hero Section
