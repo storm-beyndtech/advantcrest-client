@@ -19,7 +19,7 @@ import {
 // Hero Section
 const TradingViewHero = () => {
   return (
-    <section className="relative bg-slate-900 py-16 overflow-hidden">
+    <section className="relative bg-slate-900 py-16 pt-48 overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
