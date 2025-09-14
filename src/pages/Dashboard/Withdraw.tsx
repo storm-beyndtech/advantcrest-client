@@ -136,7 +136,7 @@ export default function Withdraw() {
   return (
     coin && (
       <div className="w-full flex justify-center shadow-1 m-auto">
-        <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-950 dark:border-gray-900">
+        <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-900/10 dark:border-gray-900">
           <form className="space-y-6" action="#" onSubmit={sendWithdraw}>
             <h5 className="text-xl font-medium text-gray-900 dark:text-white">
               Start Withdraw
@@ -161,7 +161,7 @@ export default function Withdraw() {
                 <select
                   onChange={handleCoinChange}
                   id="coin"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 capitalize"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-900/30 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 capitalize"
                   disabled={!withdrawalStatus}
                 >
                   {coins.map((c: Coin, i: number) => (
@@ -184,7 +184,7 @@ export default function Withdraw() {
                   value={amount === 0 ? '' : amount}
                   type="number"
                   id="amount"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900/30 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
                   placeholder="$0.00"
                   required
                   min={minWithdrawal}
@@ -209,7 +209,7 @@ export default function Withdraw() {
                   value={address}
                   type="text"
                   id="address"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900/30 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
                   placeholder="Enter Wallet Address"
                   required
                   disabled={!withdrawalStatus}
@@ -228,7 +228,7 @@ export default function Withdraw() {
                   value={network}
                   type="text"
                   id="network"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900/30 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
                   placeholder="Enter Wallet Network"
                   required
                   disabled={!withdrawalStatus}
@@ -248,7 +248,7 @@ export default function Withdraw() {
                   value={convertedAmount}
                   type="number"
                   id="convertedAmount"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900/30 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
                   disabled
                   required
                 />
@@ -266,7 +266,7 @@ export default function Withdraw() {
                     value={`$${minWithdrawal}`}
                     type="text"
                     id="minWithdraw"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900/30 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
                     disabled
                   />
                 </div>
@@ -283,7 +283,7 @@ export default function Withdraw() {
                       value={`$${userWithdrawalLimit.toLocaleString()}`}
                       type="text"
                       id="maxWithdraw"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900/30 dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
                       disabled
                     />
                   </div>
@@ -297,7 +297,7 @@ export default function Withdraw() {
               className={`w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
                 !withdrawalStatus || loading
                   ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                  : 'bg-sky-600 hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
               }`}
             >
               {loading ? 'Loading...' : 'Withdraw'}

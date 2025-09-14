@@ -6,6 +6,8 @@ import {
   companyDropDownLinks,
   marketDropDownLinks,
   toolsDropDownLinks,
+  platformsDropDownLinks,
+  mirrorTradingDropDownLinks,
 } from '@/lib/utils';
 import GTranslateProvider from './ui/GTranslateProvider';
 
@@ -35,7 +37,7 @@ export default function NavBar() {
       <div
         className={`w-full transition-all duration-900 relative bg-bodydark border-b border-gray-800/20`}
       >
-        <div className={`max-w-7xl mx-auto px-5 py-4`}>
+        <div className={`max-w-[1400px] mx-auto px-5 py-4`}>
           {isMobile ? (
             <div className="flex justify-between items-center">
               <Link to="/" className="">
@@ -163,6 +165,71 @@ export default function NavBar() {
                           ))}
                         </div>
                       )}
+                    </div>
+
+                    <div>
+                      <button
+                        className="flex justify-between items-center w-full py-2"
+                        onClick={() => toggleDropdown('platforms')}
+                      >
+                        <span className="text-white/80 font-medium">PLATFORMS</span>
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${
+                            activeDropdown === 'platforms' ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+
+                      {activeDropdown === 'platforms' && (
+                        <div className="ml-4 mt-2 space-y-2">
+                          {platformsDropDownLinks.map((link, i) => (
+                            <Link
+                              key={i}
+                              to={link.to}
+                              className="block text-sm text-white/80 hover:text-blue-400 py-1"
+                            >
+                              {link.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <button
+                        className="flex justify-between items-center w-full py-2"
+                        onClick={() => toggleDropdown('mirror-trading')}
+                      >
+                        <span className="text-white/80 font-medium">MIRROR TRADING</span>
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${
+                            activeDropdown === 'mirror-trading' ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+
+                      {activeDropdown === 'mirror-trading' && (
+                        <div className="ml-4 mt-2 space-y-2">
+                          {mirrorTradingDropDownLinks.map((link, i) => (
+                            <Link
+                              key={i}
+                              to={link.to}
+                              className="block text-sm text-white/80 hover:text-blue-400 py-1"
+                            >
+                              {link.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="py-2">
+                      <Link
+                        to="/recap"
+                        className="block text-white/80 hover:text-blue-400 font-medium"
+                      >
+                        RECAP
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -340,18 +407,16 @@ export default function NavBar() {
                                 TRADING PLATFORMS
                               </h4>
                               <ul className="space-y-2">
-                                {toolsDropDownLinks
-                                  .slice(0, 5)
-                                  .map((link, i) => (
-                                    <li key={i}>
-                                      <Link
-                                        to={link.to}
-                                        className="text-white/80 hover:text-blue-400 transition-colors"
-                                      >
-                                        {link.label}
-                                      </Link>
-                                    </li>
-                                  ))}
+                                {platformsDropDownLinks.map((link, i) => (
+                                  <li key={i}>
+                                    <Link
+                                      to={link.to}
+                                      className="text-white/80 hover:text-blue-400 transition-colors"
+                                    >
+                                      {link.label}
+                                    </Link>
+                                  </li>
+                                ))}
                               </ul>
                             </div>
                             <div>
@@ -412,30 +477,16 @@ export default function NavBar() {
                                 COPY TRADING SERVICES
                               </h4>
                               <ul className="space-y-2">
-                                <li>
-                                  <Link
-                                    to="/copy-trading"
-                                    className="text-white/80 hover:text-blue-400 transition-colors"
-                                  >
-                                    Copy Trading
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    to="/signal-providers"
-                                    className="text-white/80 hover:text-blue-400 transition-colors"
-                                  >
-                                    Signal Providers
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    to="/performance-analytics"
-                                    className="text-white/80 hover:text-blue-400 transition-colors"
-                                  >
-                                    Performance Analytics
-                                  </Link>
-                                </li>
+                                {mirrorTradingDropDownLinks.map((link, i) => (
+                                  <li key={i}>
+                                    <Link
+                                      to={link.to}
+                                      className="text-white/80 hover:text-blue-400 transition-colors"
+                                    >
+                                      {link.label}
+                                    </Link>
+                                  </li>
+                                ))}
                               </ul>
                             </div>
                           </div>

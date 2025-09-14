@@ -7,7 +7,7 @@ const Hero: React.FC = () => {
       className="relative min-h-screen bg-no-repeat bg-center"
       id="heroSection"
     >
-      <div className="max-ctn h-full max-md:px-5 max-md:pb-10 pt-40 flex flex-wrap justify-between items-center gap-20">
+      <div className="max-ctn h-full max-md:px-5 max-md:pb-10 pt-40 flex flex-wrap justify-between items-center gap-y-20">
         <div className="max-w-180">
           <p className="text-[#636262] text-lg mb-5">
             Empower your financial journey with <br />

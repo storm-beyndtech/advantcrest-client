@@ -92,7 +92,7 @@ const TradeHistory = () => {
   };
 
   return (
-    <div className="w-full bg-white dark:bg-gray-950 rounded-lg shadow-sm overflow-hidden">
+    <div className="w-full bg-white dark:bg-gray-900/20 rounded-lg shadow-sm overflow-hidden">
       <div className="p-4 border-b border-gray-200 dark:border-gray-900">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold text-gray-800 dark:text-white">

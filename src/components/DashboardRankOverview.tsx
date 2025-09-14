@@ -124,7 +124,7 @@ const DashboardRankOverview: React.FC = () => {
 
   if (isMaxRank) {
     return (
-      <div className="bg-white dark:bg-gray-950/20 rounded-xl p-6 shadow-sm">
+      <div className="bg-white dark:bg-emerald-950/10 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-amber-300/20 backdrop-blur-sm">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             Your Rank Status
@@ -166,7 +166,7 @@ const DashboardRankOverview: React.FC = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900/50 rounded-xl p-6 shadow-sm">
+    <div className="bg-white dark:bg-emerald-950/10 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-blue-400/20 backdrop-blur-sm">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -222,7 +222,7 @@ const DashboardRankOverview: React.FC = () => {
                 {nextRank!.minimumDeposit.toLocaleString('en-US')}
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-emerald-900/30 rounded-full h-2">
               <div
                 className="bg-blue-500 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
@@ -232,7 +232,7 @@ const DashboardRankOverview: React.FC = () => {
 
           {/* Referral Requirements Notice */}
           {nextRankRequiresReferrals && (
-            <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+            <div className="p-3 bg-yellow-50 dark:bg-gradient-to-r dark:from-amber-300/10 dark:to-yellow-400/10 rounded-lg border border-yellow-200 dark:border-amber-300/30">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center">
                   <span className="text-xs text-white">!</span>
@@ -258,7 +258,7 @@ const DashboardRankOverview: React.FC = () => {
         </div>
 
         {/* Next rank bonus */}
-        <div className="text-center p-3 bg-gray-50 dark:bg-gray-950 rounded">
+        <div className="text-center p-3 bg-gray-50 dark:bg-emerald-950/10 rounded">
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Reach {nextRank!.name} to unlock
           </p>

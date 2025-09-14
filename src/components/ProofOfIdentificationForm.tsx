@@ -179,7 +179,7 @@ export default function ProofOfIdentificationForm(): JSX.Element {
   };
 
   return (
-    <div className="p-6 rounded-lg max-w-5xl mx-auto dark:bg-gray-950 dark:text-white bg-white text-gray-900">
+    <div className="p-6 rounded-lg max-w-5xl mx-auto dark:bg-emerald-950/10 dark:text-white bg-white text-gray-900 border border-gray-100 dark:border-emerald-800/30 backdrop-blur-sm">
       <div className="flex justify-between items-start mb-6">
         <h2 className="text-2xl font-semibold dark:text-white text-gray-900">
           Proof of Identification
@@ -207,8 +207,8 @@ export default function ProofOfIdentificationForm(): JSX.Element {
               type="button"
               className={`p-3 text-center rounded-md transition-all font-semibold ${
                 formData.documentType === type
-                  ? 'dark:bg-blue-600 bg-blue-500 text-white'
-                  : 'dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? 'dark:bg-gradient-to-r dark:from-emerald-500 dark:to-cyan-500 bg-blue-500 text-white'
+                  : 'dark:bg-emerald-950/30 dark:text-gray-300 dark:hover:bg-emerald-950/50 bg-gray-200 text-gray-700 hover:bg-gray-300 dark:border dark:border-emerald-800/30'
               }`}
               onClick={() => handleDocumentTypeChange(type)}
             >
@@ -331,7 +331,7 @@ export default function ProofOfIdentificationForm(): JSX.Element {
               className={`w-full border rounded-md py-3 px-4 ${
                 errors.documentNumber
                   ? 'border-red-500'
-                  : 'dark:bg-gray-900 dark:border-gray-700 dark:text-white bg-white border-gray-300 text-gray-900'
+                  : 'dark:bg-emerald-950/20 dark:border-emerald-800/30 dark:text-white bg-white border-gray-300 text-gray-900'
               }`}
               placeholder="Enter document number"
             />
@@ -367,7 +367,7 @@ export default function ProofOfIdentificationForm(): JSX.Element {
               ${
                 errors.expiryDate
                   ? 'border-red-500'
-                  : 'dark:bg-gray-900 dark:border-gray-700 dark:text-white bg-white border-gray-300 text-gray-900'
+                  : 'dark:bg-emerald-950/20 dark:border-emerald-800/30 dark:text-white bg-white border-gray-300 text-gray-900'
               }`}
               />
               <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-300 pointer-events-none" />
@@ -385,7 +385,7 @@ export default function ProofOfIdentificationForm(): JSX.Element {
           <button
             type="submit"
             disabled={loading}
-            className="dark:bg-blue-600 dark:hover:bg-blue-700 bg-blue-500 hover:bg-blue-600 text-white py-2 font-semibold px-6 rounded-md transition-all disabled:opacity-60 disabled:cursor-not-allowed w-full md:w-auto md:min-w-64"
+            className="dark:bg-gradient-to-r dark:from-emerald-500 dark:to-cyan-500 dark:hover:from-emerald-600 dark:hover:to-cyan-600 bg-blue-500 hover:bg-blue-600 text-white py-2 font-semibold px-6 rounded-md transition-all disabled:opacity-60 disabled:cursor-not-allowed w-full md:w-auto md:min-w-64"
           >
             {loading ? 'Submitting...' : 'Submit Proof of Identification'}
           </button>

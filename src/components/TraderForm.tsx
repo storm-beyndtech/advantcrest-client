@@ -179,7 +179,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+    <div className="bg-white dark:bg-emerald-950/10 shadow-lg rounded-lg p-6 border border-gray-100 dark:border-emerald-800/30 backdrop-blur-sm">
       <h2 className="text-2xl font-bold mb-6 dark:text-white">
         {trader ? 'Edit Trader' : 'Add New Trader'}
       </h2>
@@ -206,7 +206,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
 
@@ -225,7 +225,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 onChange={handleChange}
                 required
                 placeholder="@username"
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
 
@@ -244,7 +244,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                   onChange={handleFileChange}
                   accept="image/*"
                   ref={fileInputRef}
-                  className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                  className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
                 />
 
                 {previewUrl && (
@@ -282,7 +282,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 onChange={handleChange}
                 required
                 rows={3}
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
 
@@ -301,7 +301,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 onChange={handleChange}
                 required
                 min="1"
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
           </div>
@@ -326,7 +326,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 value={formData.totalTrades === 0 ? '' : formData.totalTrades}
                 onChange={handleChange}
                 min={0}
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
 
@@ -343,7 +343,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 value={formData.specialization}
                 onChange={handleChange}
                 required
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               >
                 <option value="Forex">Forex</option>
                 <option value="Crypto">Crypto</option>
@@ -368,7 +368,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 value={formData.tradingStyle}
                 onChange={handleChange}
                 required
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               >
                 <option value="Day Trading">Day Trading</option>
                 <option value="Swing Trading">Swing Trading</option>
@@ -390,7 +390,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 value={formData.riskLevel}
                 onChange={handleChange}
                 required
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               >
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -412,7 +412,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 value={formData.averageHoldingTime}
                 onChange={handleChange}
                 placeholder="e.g. 2 days, 4 hours"
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
           </div>
@@ -441,7 +441,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 }
                 onChange={handleChange}
                 step="0.1"
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
 
@@ -463,7 +463,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 }
                 onChange={handleChange}
                 step="0.1"
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
 
@@ -483,7 +483,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 min="0"
                 max="100"
                 step="0.1"
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
 
@@ -501,7 +501,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 value={formData.totalCopiers === 0 ? '' : formData.totalCopiers}
                 onChange={handleChange}
                 min="0"
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
           </div>
@@ -531,7 +531,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 onChange={handleChange}
                 required
                 min="0"
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
 
@@ -551,7 +551,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 min="0"
                 max="100"
                 step="0.1"
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               />
             </div>
 
@@ -567,7 +567,7 @@ const TraderForm: React.FC<TraderFormProps> = ({
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white"
+                className="w-full bg-white dark:bg-emerald-950/20 border border-gray-300 dark:border-emerald-800/30 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 text-gray-900 dark:text-white"
               >
                 <option value="active">Active</option>
                 <option value="paused">Paused</option>
@@ -583,13 +583,13 @@ const TraderForm: React.FC<TraderFormProps> = ({
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white transition-colors"
+            className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-emerald-950/30 dark:hover:bg-emerald-950/50 dark:text-white transition-colors border dark:border-emerald-800/30"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white dark:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
+            className="px-4 py-2 rounded-md bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white transition-colors"
           >
             {trader
               ? isLoading

@@ -94,7 +94,7 @@ const RecentTrades = () => {
   };
 
   return (
-    <div className="w-full bg-white dark:bg-emerald-950/10 rounded-lg shadow-sm overflow-hidden border border-gray-100 dark:bg-gradient-to-r dark:from-amber-300/10 dark:to-blue-400/10 dark:border-transparent backdrop-blur-sm ring-1 ring-gray-100 dark:ring-amber-300/20">
+    <div className="w-full bg-white dark:bg-emerald-900/10 rounded-lg shadow-sm overflow-hidden border border-gray-100 dark:bg-gradient-to-r dark:from-amber-400/5 dark:to-blue-400/5 dark:border-transparent backdrop-blur-sm ring-1 ring-gray-100 dark:ring-amber-300/20">
       <div className="p-4 border-b border-gray-200 dark:border-emerald-800/30">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold text-gray-800 dark:text-white">

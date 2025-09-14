@@ -218,7 +218,7 @@ export default function ProfileInfo() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900 p-4 sm:p-6 rounded-lg">
+    <div className="bg-white dark:bg-emerald-950/10 p-4 sm:p-6 rounded-lg border border-gray-100 dark:border-emerald-800/30 backdrop-blur-sm">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
         Update Profile
       </h2>
@@ -245,8 +245,8 @@ export default function ProfileInfo() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Image Section */}
         <div className="lg:col-span-1">
-          <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-            <div className="w-full h-64 sm:h-80 bg-gray-200 dark:bg-gray-700 rounded-md mb-4 flex items-center justify-center overflow-hidden">
+          <div className="bg-gray-100 dark:bg-emerald-950/20 border dark:border-emerald-800/20 p-4 rounded-lg">
+            <div className="w-full h-64 sm:h-80 bg-gray-200 dark:bg-emerald-950/30 rounded-md mb-4 flex items-center justify-center overflow-hidden">
               {formData.profileImage instanceof File ? (
                 <img
                   src={URL.createObjectURL(formData.profileImage)}
@@ -302,10 +302,10 @@ export default function ProfileInfo() {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleInputChange}
-                className={`w-full p-3 bg-gray-50 dark:bg-gray-800 border rounded-md text-gray-900 dark:text-white ${
+                className={`w-full p-3 bg-gray-50 dark:bg-emerald-950/20 border rounded-md text-gray-900 dark:text-white ${
                   errors.firstName
                     ? 'border-red-400 dark:border-red-500'
-                    : 'border-gray-300 dark:border-gray-700'
+                    : 'border-gray-300 dark:border-emerald-800/30'
                 }`}
               />
               {errors.firstName && (
@@ -323,10 +323,10 @@ export default function ProfileInfo() {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleInputChange}
-                className={`w-full p-3 bg-gray-50 dark:bg-gray-800 border rounded-md text-gray-900 dark:text-white ${
+                className={`w-full p-3 bg-gray-50 dark:bg-emerald-950/20 border rounded-md text-gray-900 dark:text-white ${
                   errors.lastName
                     ? 'border-red-400 dark:border-red-500'
-                    : 'border-gray-300 dark:border-gray-700'
+                    : 'border-gray-300 dark:border-emerald-800/30'
                 }`}
               />
               {errors.lastName && (
@@ -347,10 +347,10 @@ export default function ProfileInfo() {
                 name="province"
                 value={formData.province}
                 onChange={handleInputChange}
-                className={`w-full p-3 bg-gray-50 dark:bg-gray-800 border rounded-md text-gray-900 dark:text-white ${
+                className={`w-full p-3 bg-gray-50 dark:bg-emerald-950/20 border rounded-md text-gray-900 dark:text-white ${
                   errors.province
                     ? 'border-red-400 dark:border-red-500'
-                    : 'border-gray-300 dark:border-gray-700'
+                    : 'border-gray-300 dark:border-emerald-800/30'
                 }`}
               />
               {errors.province && (
@@ -368,10 +368,10 @@ export default function ProfileInfo() {
                 name="city"
                 value={formData.city}
                 onChange={handleInputChange}
-                className={`w-full p-3 bg-gray-50 dark:bg-gray-800 border rounded-md text-gray-900 dark:text-white ${
+                className={`w-full p-3 bg-gray-50 dark:bg-emerald-950/20 border rounded-md text-gray-900 dark:text-white ${
                   errors.city
                     ? 'border-red-400 dark:border-red-500'
-                    : 'border-gray-300 dark:border-gray-700'
+                    : 'border-gray-300 dark:border-emerald-800/30'
                 }`}
               />
               {errors.city && (
@@ -393,10 +393,10 @@ export default function ProfileInfo() {
                 value={formData.zipCode}
                 onChange={handleInputChange}
                 placeholder="12345 or 12345-6789"
-                className={`w-full p-3 bg-gray-50 dark:bg-gray-800 border rounded-md text-gray-900 dark:text-white ${
+                className={`w-full p-3 bg-gray-50 dark:bg-emerald-950/20 border rounded-md text-gray-900 dark:text-white ${
                   errors.zipCode
                     ? 'border-red-400 dark:border-red-500'
-                    : 'border-gray-300 dark:border-gray-700'
+                    : 'border-gray-300 dark:border-emerald-800/30'
                 }`}
               />
               {errors.zipCode && (
@@ -414,10 +414,10 @@ export default function ProfileInfo() {
                 name="streetAddress"
                 value={formData.streetAddress}
                 onChange={handleInputChange}
-                className={`w-full p-3 bg-gray-50 dark:bg-gray-800 border rounded-md text-gray-900 dark:text-white ${
+                className={`w-full p-3 bg-gray-50 dark:bg-emerald-950/20 border rounded-md text-gray-900 dark:text-white ${
                   errors.streetAddress
                     ? 'border-red-400 dark:border-red-500'
-                    : 'border-gray-300 dark:border-gray-700'
+                    : 'border-gray-300 dark:border-emerald-800/30'
                 }`}
               />
               {errors.streetAddress && (
@@ -436,7 +436,7 @@ export default function ProfileInfo() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <button
                 type="button"
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center justify-center sm:justify-start"
+                className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white py-2 px-4 rounded-md flex items-center justify-center sm:justify-start"
                 onClick={() => document.getElementById('profileImage')?.click()}
               >
                 <Upload size={16} className="mr-2" /> Choose File
@@ -466,7 +466,7 @@ export default function ProfileInfo() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
             {/* Email Preferences */}
-            <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+            <div className="bg-gray-100 dark:bg-emerald-950/20 border dark:border-emerald-800/20 p-4 rounded-lg">
               <h3 className="text-gray-900 dark:text-white font-medium mb-4 flex items-center">
                 <Mail size={18} className="mr-2" /> Email Preferences
               </h3>
@@ -496,7 +496,7 @@ export default function ProfileInfo() {
             </div>
 
             {/* Push Notification Preferences */}
-            <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+            <div className="bg-gray-100 dark:bg-emerald-950/20 border dark:border-emerald-800/20 p-4 rounded-lg">
               <h3 className="text-gray-900 dark:text-white font-medium mb-4 flex items-center">
                 <Bell size={18} className="mr-2" /> Push Notifications
               </h3>
@@ -530,7 +530,7 @@ export default function ProfileInfo() {
             <button
               onClick={handleSubmit}
               disabled={submitting}
-              className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white py-3 px-4 rounded-md font-medium flex items-center justify-center"
+              className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 disabled:opacity-50 text-white py-3 px-4 rounded-md font-medium flex items-center justify-center"
             >
               {submitting ? (
                 <>

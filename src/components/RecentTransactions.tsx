@@ -58,7 +58,7 @@ const RecentTransactions = () => {
   );
 
   return (
-    <div className="w-full bg-white dark:bg-emerald-950/10 rounded-lg shadow-sm overflow-hidden border border-gray-100 dark:bg-gradient-to-r dark:from-blue-400/10 dark:to-amber-300/10 dark:border-transparent backdrop-blur-sm ring-1 ring-gray-100 dark:ring-blue-400/20">
+    <div className="w-full bg-white dark:bg-emerald-950/10 rounded-lg shadow-sm overflow-hidden border border-gray-100 dark:bg-gradient-to-r dark:from-blue-400/5 dark:to-amber-400/5 dark:border-transparent backdrop-blur-sm ring-1 ring-gray-100 dark:ring-blue-400/20">
       <div className="p-4 border-b border-gray-200 dark:border-emerald-800/30">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold text-gray-800 dark:text-white">
@@ -96,7 +96,7 @@ const RecentTransactions = () => {
       <div className="max-h-96 overflow-y-auto">
         {loading ? (
           <div className="p-8 flex justify-center items-center">
-            <RefreshCw className="h-6 w-6 text-blue-500 animate-spin" />
+            <RefreshCw className="h-6 w-6 text-emerald-500 animate-spin" />
           </div>
         ) : filteredTransactions.length > 0 ? (
           <ul className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -178,7 +178,7 @@ const RecentTransactions = () => {
 
       <div className="p-3 bg-gray-50 dark:bg-emerald-950/10 border-t border-gray-200 dark:border-emerald-800/30">
         <Link to="/dashboard/transactions">
-          <button className="w-full flex items-center justify-center text-xs font-medium text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300">
+          <button className="w-full flex items-center justify-center text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300">
             View all transactions
             <ChevronRight className="h-3.5 w-3.5 ml-1" />
           </button>

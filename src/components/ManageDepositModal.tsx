@@ -64,7 +64,7 @@ export default function ManageDepositModal({
     deposit && (
       <div className="w-screen h-screen fixed left-0 top-0 z-9999 flex items-center justify-center backdrop-blur px-2">
         {!edit && (
-          <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+          <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-emerald-950/10 dark:border-emerald-800/30 backdrop-blur-sm">
             <form className="space-y-6">
               <div className="flex items-center justify-between mb-10 pb-4 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-base font-medium text-gray-900 dark:text-white">
@@ -138,7 +138,7 @@ export default function ManageDepositModal({
                   <a
                     href="#"
                     onClick={() => startUpdate('success')}
-                    className="w-full text-white bg-[#2a8f47] hover:bg-[#3cd266] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    className="w-full text-white bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                   >
                     {successLoading ? 'Loading...' : 'Approve'}
                   </a>
@@ -146,7 +146,7 @@ export default function ManageDepositModal({
                   <a
                     href="#"
                     onClick={() => setEdit(true)}
-                    className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    className="w-full text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                   >
                     Edit
                   </a>

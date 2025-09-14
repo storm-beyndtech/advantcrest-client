@@ -77,6 +77,13 @@ import WhyChooseUs from './pages/company/WhyChooseUs';
 import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import AMLPolicy from './pages/AMLPolicy';
+import Recap from './pages/Recap';
+import MirrorTrading from './pages/mirror-trading/MirrorTrading';
+import MirrorTradingHowItWorks from './pages/mirror-trading/HowItWorks';
+import MirrorTradingTraders from './pages/mirror-trading/Traders';
+import MT4 from './pages/platforms/MT4';
+import MT5 from './pages/platforms/MT5';
+import TradingView from './pages/platforms/TradingView';
 
 function App() {
   const url = import.meta.env.VITE_REACT_APP_SERVER_URL;
@@ -252,6 +259,19 @@ function App() {
           />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/aml-policy" element={<AMLPolicy />} />
+          
+          {/* Recap Route */}
+          <Route path="/recap" element={<Recap />} />
+          
+          {/* Mirror Trading Routes */}
+          <Route path="/mirror-trading" element={<MirrorTrading />} />
+          <Route path="/mirror-trading/how-it-works" element={<MirrorTradingHowItWorks />} />
+          <Route path="/mirror-trading/traders" element={<MirrorTradingTraders />} />
+          
+          {/* Trading Platform Routes */}
+          <Route path="/platforms/mt4" element={<MT4 />} />
+          <Route path="/platforms/mt5" element={<MT5 />} />
+          <Route path="/platforms/tradingview" element={<TradingView />} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

@@ -188,6 +188,36 @@ export const toolsDropDownLinks: MenuItem[] = [
   },
 ];
 
+export const platformsDropDownLinks: MenuItem[] = [
+  {
+    label: 'MetaTrader 4',
+    to: '/platforms/mt4',
+  },
+  {
+    label: 'MetaTrader 5',
+    to: '/platforms/mt5',
+  },
+  {
+    label: 'TradingView',
+    to: '/platforms/tradingview',
+  },
+];
+
+export const mirrorTradingDropDownLinks: MenuItem[] = [
+  {
+    label: 'Mirror Trading',
+    to: '/mirror-trading',
+  },
+  {
+    label: 'How It Works',
+    to: '/mirror-trading/how-it-works',
+  },
+  {
+    label: 'Browse Traders',
+    to: '/mirror-trading/traders',
+  },
+];
+
 export const bonds = {
   title: 'Popular Bonds',
   type: 'bonds',

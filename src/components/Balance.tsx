@@ -34,7 +34,7 @@ export default function Balance({
   };
 
   return (
-    <div className="w-full max-w-96 h-56 rounded-3xl overflow-hidden shadow-xl bg-emerald-950/30 border border-emerald-800/20 backdrop-blur-sm">
+    <div className="w-full max-w-96 h-56 rounded-3xl overflow-hidden shadow-xl dark:bg-emerald-950/10 backdrop-blur-sm ring-1 ring-gradient-to-r ring-from-amber-300/30 ring-to-blue-400/30 border border-transparent">
       <div className="h-full w-full p-6 relative">
         {/* Glass-like pattern overlay */}
         <div className="absolute top-0 left-0 w-full h-full bg-white/10 opacity-20 z-0"></div>
@@ -43,13 +43,19 @@ export default function Balance({
         <div className="w-full z-10 relative flex justify-between">
           <div className="flex flex-col items-baseline mb-1">
             <p className="text-xs text-gray-400 font-light">Total Balance</p>
-            <h1 className="text-4xl font-semibold text-white tracking-tight">
+            <h1 className="text-4xl font-semibold dark:text-white text-gray-700 tracking-tight">
               {formattedNumber(totalBal)}
-              <span className="text-lg font-mono text-gray-300 ml-1">$</span>
+              <span className="text-lg font-mono dark:text-gray-300 ml-1">
+                $
+              </span>
             </h1>
           </div>
 
-          <img src="/fav.svg" alt="logo" className="w-8" />
+          <img
+            src="/fav.svg"
+            alt="logo"
+            className="w-8 filter dark:filter-none brightness-0 dark:brightness-100"
+          />
         </div>
 
         {/* Stats section */}
@@ -59,7 +65,7 @@ export default function Balance({
               <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
               <span className="text-xs text-gray-400">Deposit</span>
             </div>
-            <span className="text-sm font-medium text-white">
+            <span className="text-sm font-medium dark:text-white text-gray-600">
               ${formattedNumber(user?.deposit)}
             </span>
           </div>
@@ -69,7 +75,7 @@ export default function Balance({
               <div className="w-2 h-2 rounded-full bg-cyan-500"></div>
               <span className="text-xs text-gray-400">Interest</span>
             </div>
-            <span className="text-sm font-medium text-white">
+            <span className="text-sm font-medium dark:text-white text-gray-600">
               ${formattedNumber(user?.interest)}
             </span>
           </div>
@@ -79,7 +85,9 @@ export default function Balance({
               <Activity size={12} className="text-gray-400" />
               <span className="text-xs text-gray-400">Trades</span>
             </div>
-            <span className="text-sm font-medium text-white">{trades}</span>
+            <span className="text-sm font-medium dark:text-white text-gray-600">
+              {trades}
+            </span>
           </div>
         </div>
 
@@ -95,7 +103,7 @@ export default function Balance({
 
           <button
             onClick={handleDeposit}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white transition-all duration-300"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gradient-to-r from-yellow-600 to-sky-600 hover:from-emerald-600 hover:to-cyan-600 text-white transition-all duration-300"
           >
             <ArrowDownLeft size={12} />
             <span className="text-xs font-medium">Deposit</span>

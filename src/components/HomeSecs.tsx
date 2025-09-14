@@ -50,8 +50,7 @@ export const AboutSection = () => {
     {
       icon: <Shield className="w-8 h-8" />,
       title: 'Risk Management',
-      description:
-        'Advanced risk controls & protection with customizable stop-loss',
+      description: 'Advanced risk controls & protection with custom stop-loss',
     },
     {
       icon: <BarChart3 className="w-8 h-8" />,
@@ -80,7 +79,7 @@ export const AboutSection = () => {
             Why Choose Our{' '}
             <span className="text-blue-600">Copy Trading Platform</span>
           </h2>
-          <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+          <p className="text-sm text-slate-600 max-w-3xl mx-auto">
             Join thousands of investors who trust our platform to grow their
             wealth through professional copy trading
           </p>
@@ -102,7 +101,7 @@ export const AboutSection = () => {
               <h3 className="text-xl font-semibold text-slate-900 mb-4">
                 {feature.title}
               </h3>
-              <p className="text-slate-600 leading-relaxed">
+              <p className="text-slate-600 leading-relaxed text-sm">
                 {feature.description}
               </p>
             </motion.div>
@@ -186,7 +185,7 @@ export const HowItWorks = () => {
                 <h3 className="text-xl font-semibold text-white mb-4">
                   {step.title}
                 </h3>
-                <p className="text-slate-300">{step.description}</p>
+                <p className="text-slate-300 text-xs">{step.description}</p>
               </div>
 
               {index < steps.length - 1 && (
@@ -764,8 +763,13 @@ export const TrustSecurity = () => {
             viewport={{ once: true }}
             className="text-center p-6"
           >
-            <div className="bg-slate-100 rounded-2xl p-8 mb-4 flex items-center justify-center h-32">
-              <span className="text-stone-400">CySEC Logo</span>
+            <div className="bg-white rounded-2xl p-8 mb-4 flex items-center justify-center h-32 border border-slate-200">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-2 mx-auto">
+                  <Building className="w-8 h-8 text-slate-600" />
+                </div>
+                <span className="text-sm font-semibold text-slate-700">CySEC</span>
+              </div>
             </div>
             <h3 className="font-semibold text-slate-900">CySEC Regulated</h3>
           </motion.div>
@@ -777,8 +781,13 @@ export const TrustSecurity = () => {
             viewport={{ once: true }}
             className="text-center p-6"
           >
-            <div className="bg-slate-100 rounded-2xl p-8 mb-4 flex items-center justify-center h-32">
-              <span className="text-stone-400">FCA Licensed</span>
+            <div className="bg-white rounded-2xl p-8 mb-4 flex items-center justify-center h-32 border border-slate-200">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-2 mx-auto">
+                  <CheckCircle className="w-8 h-8 text-slate-600" />
+                </div>
+                <span className="text-sm font-semibold text-slate-700">FCA</span>
+              </div>
             </div>
             <h3 className="font-semibold text-slate-900">FCA Licensed</h3>
           </motion.div>
@@ -790,8 +799,13 @@ export const TrustSecurity = () => {
             viewport={{ once: true }}
             className="text-center p-6"
           >
-            <div className="bg-slate-100 rounded-2xl p-8 mb-4 flex items-center justify-center h-32">
-              <span className="text-stone-400">SSL Secured</span>
+            <div className="bg-white rounded-2xl p-8 mb-4 flex items-center justify-center h-32 border border-slate-200">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-2 mx-auto">
+                  <Shield className="w-8 h-8 text-slate-600" />
+                </div>
+                <span className="text-sm font-semibold text-slate-700">SSL</span>
+              </div>
             </div>
             <h3 className="font-semibold text-slate-900">
               Bank-Level Security
@@ -805,8 +819,13 @@ export const TrustSecurity = () => {
             viewport={{ once: true }}
             className="text-center p-6"
           >
-            <div className="bg-slate-100 rounded-2xl p-8 mb-4 flex items-center justify-center h-32">
-              <span className="text-stone-400">Investor Protection</span>
+            <div className="bg-white rounded-2xl p-8 mb-4 flex items-center justify-center h-32 border border-slate-200">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-2 mx-auto">
+                  <DollarSign className="w-8 h-8 text-slate-600" />
+                </div>
+                <span className="text-sm font-semibold text-slate-700">€20K</span>
+              </div>
             </div>
             <h3 className="font-semibold text-slate-900">€20K Protection</h3>
           </motion.div>
@@ -856,7 +875,7 @@ export const MobileApp = () => {
   const animation = useScrollAnimation();
 
   return (
-    <section className="py-20 bg-slate-950">
+    <section className="py-20 bg-black/50">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
@@ -923,12 +942,12 @@ export const MobileApp = () => {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="bg-stone-900 rounded-3xl p-8 border border-stone-800">
-              <div className="bg-stone-800 rounded-2xl h-96 flex items-center justify-center">
-                <span className="text-slate-500 text-lg">
-                  Mobile App Interface
-                </span>
-              </div>
+            <div className="rounded-3xl">
+              <img 
+                src="/src/assets/trade-ui.png"
+                alt="AdvantCrest Mobile Trading Interface"
+                className="w-full object-cover"
+              />
             </div>
           </motion.div>
         </div>
