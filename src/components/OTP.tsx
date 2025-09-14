@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import Alert from '@/components/ui/Alert';
-import { bounceAnimation } from '@/lib/utils';
 import logo from '../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import DarkModeSwitcher from '@/components/Layouts/DarkModeSwitcher';

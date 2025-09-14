@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
 import Alert from '@/components/ui/Alert';
-import { bounceAnimation } from '@/lib/utils';
 import logo from '../../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import DarkModeSwitcher from '@/components/Layouts/DarkModeSwitcher';
