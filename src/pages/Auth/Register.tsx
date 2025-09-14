@@ -103,7 +103,15 @@ const Register: React.FC = () => {
       setSubmitStatus('success');
       // Redirect or handle successful registration
       setTimeout(() => {
-        navigate('/otp');
+        navigate('/verify-otp', {
+          state: {
+            email: formData.email,
+            username: formData.username,
+            password: formData.password,
+            referredBy: formData.referredBy,
+            pageType: 'register-verification'
+          }
+        });
       }, 2000);
     } catch (error: any) {
       // Handle registration error
