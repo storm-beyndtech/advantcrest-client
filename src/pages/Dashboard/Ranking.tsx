@@ -93,7 +93,9 @@ const RankCard: React.FC<RankCardProps> = ({
         >
           <div className="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
             <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-              {rankData.name}
+              {rankData.name === 'silverPro' ? 'Silver Pro' : 
+               rankData.name === 'goldPro' ? 'Gold Pro' : 
+               rankData.name.charAt(0).toUpperCase() + rankData.name.slice(1)}
               {isCurrentRank && (
                 <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded">
                   Current
@@ -151,7 +153,9 @@ const RankCard: React.FC<RankCardProps> = ({
               : 'text-gray-800 dark:text-gray-100'
           }`}
         >
-          {rankData.name}
+          {rankData.name === 'silverPro' ? 'Silver Pro' : 
+           rankData.name === 'goldPro' ? 'Gold Pro' : 
+           rankData.name.charAt(0).toUpperCase() + rankData.name.slice(1)}
         </h3>
         <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
           ${rankData.minimumDeposit.toLocaleString('en-US')} minimum
@@ -192,7 +196,7 @@ const Ranking: React.FC = () => {
     },
     {
       level: 3,
-      name: 'silver pro',
+      name: 'silverPro',
       minimumDeposit: 25000,
       directReferral: 0,
       referralDeposits: 0,
@@ -210,7 +214,7 @@ const Ranking: React.FC = () => {
     },
     {
       level: 5,
-      name: 'gold pro',
+      name: 'goldPro',
       minimumDeposit: 100000,
       directReferral: 0,
       referralDeposits: 0,
@@ -240,8 +244,10 @@ const Ranking: React.FC = () => {
   // Get current rank from user data or calculate based on deposit
   const getCurrentRank = (): RankData => {
     // Always use the stored rank from user data (whether manual or auto)
-    const userStoredRank = user.rank?.toLowerCase();
-    let rankByName = ranks.find(r => r.name.toLowerCase().replace(' ', '') === userStoredRank?.replace(' ', ''));
+    const userStoredRank = user.rank;
+    
+    // Find rank by exact name match
+    let rankByName = ranks.find(r => r.name === userStoredRank);
     
     // If stored rank exists, use it (respects both manual and auto ranks)
     if (rankByName) {
