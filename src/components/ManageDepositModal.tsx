@@ -3,6 +3,35 @@ import { GrClose } from 'react-icons/gr';
 import EditTransaction from './EditTransaction';
 import Alert from './ui/Alert';
 
+interface ITransaction {
+  _id: string;
+  type: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+  };
+  status: 'pending' | 'success' | 'failed';
+  amount: number;
+  date: string;
+  walletData?: {
+    address: string;
+    network: string;
+    coinName: string;
+    convertedAmount: number;
+  };
+  wireTransferData?: {
+    bankName: string;
+    accountName: string;
+    accountNumber: string;
+    routingNumber: string;
+    swiftCode: string;
+    instructions: string;
+  };
+  depositMethod?: 'crypto' | 'wire';
+  tradeData?: any;
+}
+
 export default function ManageDepositModal({
   toggleModal,
   deposit,
@@ -68,7 +97,10 @@ export default function ManageDepositModal({
             <form className="space-y-6">
               <div className="flex items-center justify-between mb-10 pb-4 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-base font-medium text-gray-900 dark:text-white">
-                  Deposit Via {deposit.walletData.coinName}
+                  {deposit.depositMethod === 'wire' 
+                    ? 'Wire Transfer Deposit' 
+                    : `Deposit Via ${deposit.walletData?.coinName || 'Crypto'}`
+                  }
                 </h3>
                 <button
                   onClick={() => toggleModal(false)}
@@ -102,25 +134,52 @@ export default function ManageDepositModal({
                   Method
                 </p>
                 <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  {deposit.walletData.coinName}
+                  {deposit.depositMethod === 'wire' 
+                    ? 'Wire Transfer' 
+                    : deposit.walletData?.coinName || 'Crypto'
+                  }
                 </p>
               </div>
+
+              {deposit.depositMethod === 'wire' && deposit.wireTransferData && (
+                <>
+                  <div className="flex justify-between">
+                    <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                      Bank
+                    </p>
+                    <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                      {deposit.wireTransferData.bankName}
+                    </p>
+                  </div>
+                  
+                  <div className="flex justify-between">
+                    <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                      Account Name
+                    </p>
+                    <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                      {deposit.wireTransferData.accountName}
+                    </p>
+                  </div>
+                </>
+              )}
+
+              {deposit.depositMethod === 'crypto' && deposit.walletData && (
+                <div className="flex justify-between">
+                  <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                    In {deposit.walletData.coinName}
+                  </p>
+                  <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                    {deposit.walletData.convertedAmount}
+                  </p>
+                </div>
+              )}
 
               <div className="flex justify-between">
                 <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                   Amount
                 </p>
                 <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  {deposit.amount} usd
-                </p>
-              </div>
-
-              <div className="flex justify-between">
-                <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                  In {deposit.walletData.coinName}
-                </p>
-                <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  {deposit.walletData.convertedAmount}
+                  ${deposit.amount.toLocaleString()} USD
                 </p>
               </div>
 
@@ -169,8 +228,8 @@ export default function ManageDepositModal({
         {edit && (
           <EditTransaction
             amountInUSD={deposit.amount}
-            amountInCRYPTO={deposit.walletData.convertedAmount}
-            coinName={deposit.walletData.coinName}
+            amountInCRYPTO={deposit.walletData?.convertedAmount || deposit.amount}
+            coinName={deposit.walletData?.coinName || (deposit.depositMethod === 'wire' ? 'USD' : 'Crypto')}
             id={deposit._id}
             ToggleModal={ToggleModal}
             refetch={refetch}

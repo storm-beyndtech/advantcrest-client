@@ -8,6 +8,35 @@ import {
 } from 'lucide-react';
 import { contextData } from '@/context/AuthContext';
 
+interface ITransaction {
+  _id: string;
+  type: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+  };
+  status: 'pending' | 'success' | 'failed';
+  amount: number;
+  date: string;
+  walletData?: {
+    address: string;
+    network: string;
+    coinName: string;
+    convertedAmount: number;
+  };
+  wireTransferData?: {
+    bankName: string;
+    accountName: string;
+    accountNumber: string;
+    routingNumber: string;
+    swiftCode: string;
+    instructions: string;
+  };
+  depositMethod?: 'crypto' | 'wire';
+  tradeData?: any;
+}
+
 const TransactionsTable = () => {
   const [transactions, setTransactions] = useState<ITransaction[] | any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -120,7 +149,12 @@ const TransactionsTable = () => {
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-gray-800 dark:text-white">
-                        Executed
+                        {transaction.type === 'deposit' 
+                          ? transaction.depositMethod === 'wire' 
+                            ? 'Wire Transfer Deposit'
+                            : `${transaction.walletData?.coinName || 'Crypto'} Deposit`
+                          : 'Withdrawal'
+                        }
                       </h3>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         {new Date(transaction.date).toLocaleString('en-US', {
@@ -131,6 +165,16 @@ const TransactionsTable = () => {
                           minute: '2-digit',
                         })}
                       </p>
+                      {transaction.type === 'deposit' && transaction.depositMethod === 'wire' && transaction.wireTransferData && (
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                          Bank: {transaction.wireTransferData.bankName}
+                        </p>
+                      )}
+                      {transaction.type === 'deposit' && transaction.depositMethod === 'crypto' && transaction.walletData && (
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                          Network: {transaction.walletData.network}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="text-right">

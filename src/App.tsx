@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import { Helmet } from 'react-helmet';
 import PageLoader from './components/PageLoader';
 import { contextData } from './context/AuthContext';
+import MaintenancePage from './pages/MaintenancePage';
+import { useMaintenanceMode } from './hooks/useMaintenanceMode';
 import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
 import AboutUs from './pages/company/AboutUs';
@@ -97,6 +99,7 @@ function App() {
     location.pathname.includes('/account-setup');
     location.pathname.includes('/password-reset');
   const { fetching, user, fetchUser } = contextData();
+  const { maintenanceData, loading: maintenanceLoading } = useMaintenanceMode();
   const [assetsLoaded, setAssetsLoaded] = useState(false);
   const [traders, setTraders] = useState([]);
   const [copiedTraderId, setCopiedTraderId] = useState<string | null>(null);
@@ -177,7 +180,17 @@ function App() {
   }, []);
 
   // Show loader while either assets or user auth is loading
-  if (fetching || !assetsLoaded) return <PageLoader />;
+  if (fetching || !assetsLoaded || maintenanceLoading) return <PageLoader />;
+
+  // Check if maintenance mode is enabled and user is not admin accessing admin/login routes
+  const isLoginRoute = location.pathname === '/login';
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAllowedInMaintenance = isLoginRoute || isAdminRoute || (user?.isAdmin && isAdminRoute);
+
+  // If maintenance mode is active and user is not accessing allowed routes
+  if (maintenanceData.enabled && !isAllowedInMaintenance) {
+    return <MaintenancePage message={maintenanceData.message} onRefresh={() => window.location.reload()} />;
+  }
 
   if (!fetching)
     return (

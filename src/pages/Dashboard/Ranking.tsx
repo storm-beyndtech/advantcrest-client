@@ -63,7 +63,7 @@ const RankCard: React.FC<RankCardProps> = ({
         onMouseLeave={() => setTooltip(false)}
       >
         <div
-          className={`w-30 h-30 p-7 bg-gray-900 rounded-3xl overflow-hidden transition-all duration-300 transform-gpu hover:scale-105 ${
+          className={`w-30 h-30 p-7 bg-gray-900/40 rounded-3xl overflow-hidden transition-all duration-300 transform-gpu hover:scale-105 ${
             isCurrentRank
               ? 'ring-4 ring-blue-500 shadow-lg shadow-blue-500/50'
               : ''
@@ -89,7 +89,7 @@ const RankCard: React.FC<RankCardProps> = ({
           onClick={() => setTooltip(true)}
           className={`${
             tooltip ? 'opacity-1 visible' : 'invisible opacity-0'
-          } absolute -left-16 top-[120px] z-10 inline-block w-64 text-sm text-white transition-opacity duration-300 bg-gray-800 border border-gray-700 rounded-lg shadow-sm dark:text-gray-500 dark:border-gray-200 dark:bg-white`}
+          } absolute -left-16 top-[120px] z-10 inline-block w-64 text-sm text-white transition-opacity duration-300 bg-gray-800/30 border border-gray-700 rounded-lg shadow-sm dark:text-gray-500 dark:border-gray-200 dark:bg-white`}
         >
           <div className="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
             <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
@@ -237,8 +237,18 @@ const Ranking: React.FC = () => {
     },
   ];
 
-  // Calculate current rank
+  // Get current rank from user data or calculate based on deposit
   const getCurrentRank = (): RankData => {
+    // Always use the stored rank from user data (whether manual or auto)
+    const userStoredRank = user.rank?.toLowerCase();
+    let rankByName = ranks.find(r => r.name.toLowerCase().replace(' ', '') === userStoredRank?.replace(' ', ''));
+    
+    // If stored rank exists, use it (respects both manual and auto ranks)
+    if (rankByName) {
+      return rankByName;
+    }
+    
+    // Fallback to deposit-based calculation if no stored rank found
     for (let i = ranks.length - 1; i >= 0; i--) {
       if (userDeposit >= ranks[i].minimumDeposit) {
         return ranks[i];
@@ -250,7 +260,7 @@ const Ranking: React.FC = () => {
   const currentRank = getCurrentRank();
 
   return (
-    <div className="flex items-center justify-center flex-wrap gap-14 p-5 mb-4 rounded-[40px] bg-gray-50 dark:bg-gray-950">
+    <div className="flex items-center justify-center flex-wrap gap-14 p-5 mb-4 rounded-[40px] bg-gray-50 dark:bg-gray-900/20">
       {ranks.map((rankData) => (
         <RankCard
           key={rankData.level}

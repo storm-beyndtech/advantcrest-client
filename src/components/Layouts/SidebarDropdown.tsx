@@ -20,10 +20,10 @@ export default function SidebarDropdown({
   return (
     <div>
       <button
-        className={`group relative flex w-full items-center gap-3 rounded-lg py-3 px-4 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-all duration-200 ${
+        className={`group relative flex w-full items-center gap-3 rounded text-sm py-3 px-4 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-all duration-200 ${
           links.some((link) => pathname.includes(link.href))
-            ? 'bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 text-white border border-emerald-400/30 backdrop-blur-sm'
-            : 'hover:bg-gray-100 dark:hover:bg-emerald-900/30'
+            ? 'bg-gradient-to-r from-emerald-500/10 to-cyan-500/5 text-gray-400 border border-emerald-400/30 backdrop-blur-sm'
+            : 'hover:bg-gray-100/5 dark:hover:bg-emerald-900/30'
         }`}
         onClick={() => setOpen(!open)}
       >
@@ -44,14 +44,13 @@ export default function SidebarDropdown({
                 <NavLink
                   to={link.href}
                   className={({ isActive }) =>
-                    `group relative flex items-center gap-2 rounded-lg py-2 px-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 ${
-                      isActive 
-                        ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border-l-2 border-blue-600' 
-                        : 'hover:bg-gray-100 dark:hover:bg-gray-700 border-l-2 border-transparent'
+                    `group relative flex items-center gap-2 py-2 text-xs px-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200 ${
+                      isActive
+                        ? 'text-blue-600 dark:text-blue-400 bg-blue-50/5 dark:bg-blue-900/5 border-l border-blue-600'
+                        : 'hover:bg-gray-100/5 dark:hover:bg-gray-700 border-l border-transparent'
                     }`
                   }
                 >
-                  <div className="w-1.5 h-1.5 rounded-full bg-current opacity-60"></div>
                   {link.label}
                 </NavLink>
               </li>

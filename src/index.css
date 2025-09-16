@@ -48,11 +48,6 @@ section {
   );
 }
 
-h3,
-p {
-  font-family: 'Palanquin' !important;
-}
-
 /* Remove background and padding from the switcher */
 .gtranslate_wrapper,
 .gtranslate_wrapper * {

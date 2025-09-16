@@ -1,6 +1,41 @@
 import ManageDepositModal from '@/components/ManageDepositModal';
 import { useEffect, useState } from 'react';
-import { Search, Clock, RefreshCw, Wallet } from 'lucide-react';
+import { Search, Clock, RefreshCw, Wallet, Building2 } from 'lucide-react';
+
+interface ITransaction {
+  _id: string;
+  type: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+  };
+  status: 'pending' | 'success' | 'failed';
+  amount: number;
+  date: string;
+  walletData?: {
+    address: string;
+    network: string;
+    coinName: string;
+    convertedAmount: number;
+  };
+  wireTransferData?: {
+    bankName: string;
+    accountName: string;
+    accountNumber: string;
+    routingNumber: string;
+    swiftCode: string;
+    instructions: string;
+  };
+  depositMethod?: 'crypto' | 'wire';
+  tradeData?: any;
+}
+
+interface User {
+  id: string;
+  email: string;
+  name: string;
+}
 
 export default function PendingDeposits() {
   const [deposits, setDeposits] = useState<ITransaction[]>([]);
@@ -173,13 +208,23 @@ export default function PendingDeposits() {
 
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <Wallet className="h-4 w-4 text-gray-400 mr-2" />
+                        {deposit.depositMethod === 'wire' ? (
+                          <Building2 className="h-4 w-4 text-gray-400 mr-2" />
+                        ) : (
+                          <Wallet className="h-4 w-4 text-gray-400 mr-2" />
+                        )}
                         <div>
                           <div className="text-sm font-medium text-gray-900 dark:text-white">
-                            {deposit.walletData.coinName}
+                            {deposit.depositMethod === 'wire'
+                              ? 'Wire Transfer'
+                              : deposit.walletData?.coinName || 'Crypto'
+                            }
                           </div>
                           <div className="text-sm text-gray-500 dark:text-gray-400">
-                            {deposit.walletData.network || 'N/A'}
+                            {deposit.depositMethod === 'wire'
+                              ? deposit.wireTransferData?.bankName || 'Bank Transfer'
+                              : deposit.walletData?.network || 'N/A'
+                            }
                           </div>
                         </div>
                       </div>
@@ -190,8 +235,12 @@ export default function PendingDeposits() {
                         ${deposit.amount.toLocaleString()}
                       </div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">
-                        {deposit.walletData.convertedAmount}{' '}
-                        {deposit.walletData.coinName}
+                        {deposit.depositMethod === 'wire'
+                          ? 'USD'
+                          : deposit.walletData?.convertedAmount
+                            ? `${deposit.walletData.convertedAmount} ${deposit.walletData.coinName}`
+                            : 'Crypto'
+                        }
                       </div>
                     </td>
 
