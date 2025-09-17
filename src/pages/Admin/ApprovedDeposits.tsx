@@ -1,6 +1,7 @@
 import ManageDepositModal from '@/components/ManageDepositModal';
 import { useEffect, useState } from 'react';
 import { Search, CheckCircle, RefreshCw, Wallet } from 'lucide-react';
+import { ITransaction, User } from '@/types/transaction';
 
 export default function ApprovedDeposits() {
   const [deposits, setDeposits] = useState<ITransaction[]>([]);
@@ -176,10 +177,10 @@ export default function ApprovedDeposits() {
                         <Wallet className="h-4 w-4 text-gray-400 mr-2" />
                         <div>
                           <div className="text-sm font-medium text-gray-900 dark:text-white">
-                            {deposit.walletData.coinName}
+                            {deposit.walletData?.coinName || 'N/A'}
                           </div>
                           <div className="text-sm text-gray-500 dark:text-gray-400">
-                            {deposit.walletData.network || 'N/A'}
+                            {deposit.walletData?.network || 'N/A'}
                           </div>
                         </div>
                       </div>
@@ -190,8 +191,8 @@ export default function ApprovedDeposits() {
                         ${deposit.amount.toLocaleString()}
                       </div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">
-                        {deposit.walletData.convertedAmount}{' '}
-                        {deposit.walletData.coinName}
+                        {deposit.walletData?.convertedAmount || 'N/A'}{' '}
+                        {deposit.walletData?.coinName || ''}
                       </div>
                     </td>
 
@@ -268,31 +269,3 @@ export default function ApprovedDeposits() {
   );
 }
 
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
-
-interface WalletData {
-  address?: string;
-  network?: string;
-  coinName?: string;
-  convertedAmount?: number;
-}
-
-interface TradeData {
-  package?: string;
-  interest?: string;
-}
-
-interface ITransaction {
-  _id: string;
-  type: string;
-  user: User;
-  status: 'pending' | 'success' | 'failed';
-  amount: number;
-  date: string;
-  walletData: WalletData;
-  tradeData: TradeData;
-}

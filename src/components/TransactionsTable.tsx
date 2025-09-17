@@ -7,35 +7,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { contextData } from '@/context/AuthContext';
-
-interface ITransaction {
-  _id: string;
-  type: string;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-  };
-  status: 'pending' | 'success' | 'failed';
-  amount: number;
-  date: string;
-  walletData?: {
-    address: string;
-    network: string;
-    coinName: string;
-    convertedAmount: number;
-  };
-  wireTransferData?: {
-    bankName: string;
-    accountName: string;
-    accountNumber: string;
-    routingNumber: string;
-    swiftCode: string;
-    instructions: string;
-  };
-  depositMethod?: 'crypto' | 'wire';
-  tradeData?: any;
-}
+import { ITransaction } from '@/types/transaction';
 
 const TransactionsTable = () => {
   const [transactions, setTransactions] = useState<ITransaction[] | any[]>([]);
@@ -223,30 +195,3 @@ const TransactionsTable = () => {
 
 export default TransactionsTable;
 
-interface User {
-  id?: string;
-  email?: string;
-  name?: string;
-}
-
-interface WalletData {
-  address?: string;
-  network?: string;
-  coinName?: string;
-  convertedAmount?: number;
-}
-
-interface TradeData {
-  package?: string;
-  interest?: string;
-}
-
-interface ITransaction {
-  type: string;
-  user: User;
-  status: 'pending' | 'success' | 'failed';
-  amount: number;
-  date: string;
-  walletData: WalletData;
-  tradeData: TradeData;
-}

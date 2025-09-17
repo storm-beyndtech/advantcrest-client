@@ -1,5 +1,6 @@
 import ManageDepositModal from "@/components/ManageDepositModal";
 import { useEffect, useState } from "react";
+import { ITransaction } from '@/types/transaction';
 
 export default function RejectedDeposits() {
   const [deposits, setDeposits] = useState<ITransaction[]>([])
@@ -80,10 +81,10 @@ export default function RejectedDeposits() {
 
                     <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         <div className="text-xs font-semibold">
-                          {deposit.walletData.coinName}
+                          {deposit.walletData?.coinName || 'N/A'}
                         </div>
                         <div className="text-xs font-medium text-gray-500">
-                          {deposit.walletData.convertedAmount}
+                          {deposit.walletData?.convertedAmount || 'N/A'}
                         </div>
                     </td>
                     <td className="px-6 py-4 max-sm:text-[10px] min-w-28">
@@ -111,31 +112,3 @@ export default function RejectedDeposits() {
 
 
 
-interface User {
-  id: string; 
-  email: string;
-  name: string;
-}
-
-interface WalletData {
-  address?: string;
-  network?: string;
-  coinName?: string;
-  convertedAmount?: number;
-}
-
-interface TradeData {
-  package?: string;
-  interest?: string;
-}
-
-interface ITransaction {
-  _id: string;
-  type: string;
-  user: User;
-  status: 'pending' | 'success' | 'failed';
-  amount: number;
-  date: string; 
-  walletData: WalletData;
-  tradeData: TradeData;
-}

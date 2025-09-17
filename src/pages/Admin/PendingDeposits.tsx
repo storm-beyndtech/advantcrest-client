@@ -1,41 +1,7 @@
 import ManageDepositModal from '@/components/ManageDepositModal';
 import { useEffect, useState } from 'react';
 import { Search, Clock, RefreshCw, Wallet, Building2 } from 'lucide-react';
-
-interface ITransaction {
-  _id: string;
-  type: string;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-  };
-  status: 'pending' | 'success' | 'failed';
-  amount: number;
-  date: string;
-  walletData?: {
-    address: string;
-    network: string;
-    coinName: string;
-    convertedAmount: number;
-  };
-  wireTransferData?: {
-    bankName: string;
-    accountName: string;
-    accountNumber: string;
-    routingNumber: string;
-    swiftCode: string;
-    instructions: string;
-  };
-  depositMethod?: 'crypto' | 'wire';
-  tradeData?: any;
-}
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { ITransaction, User } from '@/types/transaction';
 
 export default function PendingDeposits() {
   const [deposits, setDeposits] = useState<ITransaction[]>([]);
@@ -317,31 +283,3 @@ export default function PendingDeposits() {
   );
 }
 
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
-
-interface WalletData {
-  address?: string;
-  network?: string;
-  coinName?: string;
-  convertedAmount?: number;
-}
-
-interface TradeData {
-  package?: string;
-  interest?: string;
-}
-
-interface ITransaction {
-  _id: string;
-  type: string;
-  user: User;
-  status: 'pending' | 'success' | 'failed';
-  amount: number;
-  date: string;
-  walletData: WalletData;
-  tradeData: TradeData;
-}
