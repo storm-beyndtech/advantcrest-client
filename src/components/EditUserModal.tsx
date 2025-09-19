@@ -5,6 +5,7 @@ import { contextData } from '@/context/AuthContext';
 import Alert from './ui/Alert';
 import QuickAddModal from './QuickAddModal';
 import { Plus } from 'lucide-react';
+import { useRankings } from '@/hooks/useRankings';
 
 interface Ranking {
   level: number;
@@ -52,6 +53,19 @@ export default function EditUserModal({ userData: initialUserData, handleUserDat
   const { login } = contextData();
   const navigate = useNavigate();
   const url = import.meta.env.VITE_REACT_APP_SERVER_URL;
+
+  // Fetch dynamic rankings for auto-calculation
+  const { rankings } = useRankings(email);
+
+  // Auto-update rank when deposit or custom rankings change
+  useEffect(() => {
+    if (deposit > 0) {
+      const autoRank = getAutoRank(deposit);
+      if (rank !== autoRank) {
+        setRank(autoRank);
+      }
+    }
+  }, [deposit, userData.customRankings, rankings]);
 
   useEffect(() => {
     if (initialUserData) {
@@ -169,15 +183,35 @@ export default function EditUserModal({ userData: initialUserData, handleUserDat
     }
   };
 
-  // Calculate rank based on deposit level (matches Ranking page)
+  // Calculate rank based on deposit level using dynamic ranking data
   const getAutoRank = (depositAmount: number) => {
-    if (depositAmount >= 1000000) return 'ambassador';
-    if (depositAmount >= 500000) return 'diamond';
-    if (depositAmount >= 100000) return 'goldPro';
-    if (depositAmount >= 50000) return 'gold';
-    if (depositAmount >= 25000) return 'silverPro';
-    if (depositAmount >= 5000) return 'silver';
-    return 'welcome';
+    // First check if we have current custom rankings being edited
+    const currentRankings = userData.customRankings && userData.customRankings.length > 0 
+      ? userData.customRankings 
+      : rankings;
+
+    if (!currentRankings || currentRankings.length === 0) {
+      // Fallback to hardcoded values if rankings not loaded yet
+      if (depositAmount >= 1000000) return 'ambassador';
+      if (depositAmount >= 500000) return 'diamond';
+      if (depositAmount >= 100000) return 'goldPro';
+      if (depositAmount >= 50000) return 'gold';
+      if (depositAmount >= 25000) return 'silverPro';
+      if (depositAmount >= 5000) return 'silver';
+      return 'welcome';
+    }
+
+    // Use dynamic ranking data - sort by level descending to check highest first
+    const sortedRankings = [...currentRankings].sort((a, b) => b.level - a.level);
+    
+    for (const ranking of sortedRankings) {
+      if (depositAmount >= ranking.minimumDeposit) {
+        return ranking.name;
+      }
+    }
+    
+    // Return the lowest level rank if no match (should be welcome)
+    return sortedRankings[sortedRankings.length - 1]?.name || 'welcome';
   };
 
   const tabs = [
