@@ -32,13 +32,24 @@ export default function Withdraw() {
   const fetchCoins = async () => {
     setFetching(true);
     try {
-      const res = await fetch(`${url}/utils`);
+      // Fetch coins with live prices
+      const res = await fetch(`${url}/utils/coins-with-prices`);
       const data = await res.json();
 
-      if (res.ok) {
+      if (res.ok && data.coins && data.coins.length > 0) {
         setCoins(data.coins);
         setCoin(data.coins[0]);
-      } else throw new Error(data.message);
+      } else {
+        // Fallback to static prices
+        const fallbackRes = await fetch(`${url}/utils`);
+        const fallbackData = await fallbackRes.json();
+        if (fallbackRes.ok) {
+          setCoins(fallbackData.coins);
+          setCoin(fallbackData.coins[0]);
+        } else {
+          throw new Error(fallbackData.message);
+        }
+      }
     } catch (error) {
       console.log(error);
     } finally {

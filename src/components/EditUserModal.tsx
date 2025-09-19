@@ -6,6 +6,15 @@ import Alert from './ui/Alert';
 import QuickAddModal from './QuickAddModal';
 import { Plus } from 'lucide-react';
 
+interface Ranking {
+  level: number;
+  name: string;
+  minimumDeposit: number;
+  directReferral: number;
+  referralDeposits: number;
+  bonus: number;
+}
+
 const rankOptions = [
   'welcome',
   'silver',
@@ -16,7 +25,8 @@ const rankOptions = [
   'ambassador',
 ];
 
-export default function EditUserModal({ userData, handleUserData }: any) {
+export default function EditUserModal({ userData: initialUserData, handleUserData }: any) {
+  const [userData, setUserData] = useState(initialUserData || {});
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -44,23 +54,26 @@ export default function EditUserModal({ userData, handleUserData }: any) {
   const url = import.meta.env.VITE_REACT_APP_SERVER_URL;
 
   useEffect(() => {
-    setFullName(userData.fullName);
-    setEmail(userData.email);
-    setSelectedCountry(userData.country);
-    setPhoneNumber(userData.phone);
-    setAddress(userData.address);
-    setCity(userData.city);
-    setState(userData.state);
-    setZipCode(userData.zipCode);
-    setDeposit(userData.deposit);
-    setInterest(userData.interest);
-    setTrade(userData.trade);
-    setBonus(userData.bonus);
-    setWithdrawalLimit(userData.withdrawalLimit || 0);
-    setMinWithdrawal(userData.minWithdrawal || 1);
-    setWithdrawalStatus(userData.withdrawalStatus || false);
-    setRank(userData.rank || 'welcome');
-  }, [userData]);
+    if (initialUserData) {
+      setUserData(initialUserData);
+      setFullName(initialUserData.fullName);
+      setEmail(initialUserData.email);
+      setSelectedCountry(initialUserData.country);
+      setPhoneNumber(initialUserData.phone);
+      setAddress(initialUserData.address);
+      setCity(initialUserData.city);
+      setState(initialUserData.state);
+      setZipCode(initialUserData.zipCode);
+      setDeposit(initialUserData.deposit);
+      setInterest(initialUserData.interest);
+      setTrade(initialUserData.trade);
+      setBonus(initialUserData.bonus);
+      setWithdrawalLimit(initialUserData.withdrawalLimit || 0);
+      setMinWithdrawal(initialUserData.minWithdrawal || 1);
+      setWithdrawalStatus(initialUserData.withdrawalStatus || false);
+      setRank(initialUserData.rank || 'welcome');
+    }
+  }, [initialUserData]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -87,6 +100,7 @@ export default function EditUserModal({ userData, handleUserData }: any) {
       minWithdrawal,
       withdrawalStatus,
       rank,
+      ...(userData.customRankings && userData.customRankings.length > 0 && { customRankings: userData.customRankings }),
     };
 
     try {
@@ -171,6 +185,7 @@ export default function EditUserModal({ userData, handleUserData }: any) {
     { id: 'financial', name: 'Financial Details' },
     { id: 'trading', name: 'Trading Details' },
     { id: 'experience', name: 'Experience' },
+    { id: 'rankings', name: 'Custom Rankings' },
     { id: 'quick-add', name: 'Quick Add Funds' },
   ];
 
@@ -477,64 +492,6 @@ export default function EditUserModal({ userData, handleUserData }: any) {
                       />
                     </div>
 
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <label htmlFor="rank" className="editUserLabel">
-                          Rank
-                        </label>
-                        {userData.manualRank && (
-                          <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 px-2 py-1 rounded-full">
-                            Manual Override
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex gap-2">
-                        <select
-                          id="rank"
-                          value={rank}
-                          onChange={(e) => setRank(e.target.value)}
-                          className="editUserInput flex-1"
-                        >
-                          {rankOptions.map((option) => (
-                            <option key={option} value={option}>
-                              {option.charAt(0).toUpperCase() + option.slice(1)}
-                            </option>
-                          ))}
-                        </select>
-                        {userData.manualRank && (
-                          <button
-                            type="button"
-                            onClick={async () => {
-                              try {
-                                const res = await fetch(`${url}/users/reset-rank-to-auto`, {
-                                  method: 'PUT',
-                                  headers: { 'Content-Type': 'application/json' },
-                                  body: JSON.stringify({ email }),
-                                });
-                                const data = await res.json();
-                                if (res.ok && data.user) {
-                                  setRank(data.user.rank);
-                                  setSuccess('Rank reset to auto-calculation');
-                                } else {
-                                  throw new Error(data.message);
-                                }
-                              } catch (error: any) {
-                                setError(error.message);
-                              }
-                            }}
-                            className="px-3 py-2 bg-gray-500 hover:bg-gray-600 text-white text-xs rounded-lg transition-colors"
-                            title="Reset to Auto"
-                          >
-                            Auto
-                          </button>
-                        )}
-                      </div>
-                      {!userData.manualRank && (
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          Auto-calculated based on deposit: {getAutoRank(deposit)}
-                        </p>
-                      )}
-                    </div>
 
                     <div>
                       <label className="editUserLabel">Withdrawal Status</label>
@@ -609,6 +566,227 @@ export default function EditUserModal({ userData, handleUserData }: any) {
                       </div>
                     </div>
                   </div>
+                </div>
+              )}
+
+              {/* Rankings Tab */}
+              {activeTab === 'rankings' && (
+                <div className="space-y-6">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-200/30 dark:border-blue-800/30">
+                    <h4 className="text-lg font-semibold text-blue-800 dark:text-blue-300 mb-2">
+                      Custom Rankings Management
+                    </h4>
+                    <p className="text-sm text-blue-700 dark:text-blue-400">
+                      Set custom ranking requirements for this user. If no custom rankings are set, default values will be used.
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span>Currently using:</span>
+                      <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
+                        {userData.customRankings?.length > 0 ? 'Custom Rankings' : 'Default Rankings'}
+                      </span>
+                    </div>
+                    
+                    {userData.customRankings?.length > 0 ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUserData({ ...userData, customRankings: [] });
+                        }}
+                        className="px-3 py-1 text-sm bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-700 dark:text-red-400 rounded-lg transition-colors"
+                      >
+                        Reset to Default
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const defaultRankings = [
+                            { level: 1, name: 'welcome', minimumDeposit: 0, directReferral: 0, referralDeposits: 0, bonus: 0 },
+                            { level: 2, name: 'silver', minimumDeposit: 5000, directReferral: 0, referralDeposits: 0, bonus: 200 },
+                            { level: 3, name: 'silverPro', minimumDeposit: 25000, directReferral: 0, referralDeposits: 0, bonus: 1000 },
+                            { level: 4, name: 'gold', minimumDeposit: 50000, directReferral: 0, referralDeposits: 0, bonus: 2000 },
+                            { level: 5, name: 'goldPro', minimumDeposit: 100000, directReferral: 0, referralDeposits: 0, bonus: 3000 },
+                            { level: 6, name: 'diamond', minimumDeposit: 500000, directReferral: 12, referralDeposits: 2550000, bonus: 20000 },
+                            { level: 7, name: 'ambassador', minimumDeposit: 1000000, directReferral: 12, referralDeposits: 2550000, bonus: 50000 }
+                          ];
+                          setUserData({ ...userData, customRankings: defaultRankings });
+                        }}
+                        className="px-3 py-1 text-sm bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-400 rounded-lg transition-colors"
+                      >
+                        Create Custom Rankings
+                      </button>
+                    )}
+                  </div>
+
+                  {/* User Rank Management */}
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h5 className="font-semibold text-gray-800 dark:text-gray-200 mb-4">Current User Rank</h5>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label htmlFor="rank" className="block text-sm font-medium text-gray-600 dark:text-gray-400">
+                            Rank
+                          </label>
+                          {userData.manualRank && (
+                            <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 px-2 py-1 rounded-full">
+                              Manual Override
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex gap-2">
+                          <select
+                            id="rank"
+                            value={rank}
+                            onChange={(e) => setRank(e.target.value)}
+                            className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          >
+                            {rankOptions.map((option) => (
+                              <option key={option} value={option}>
+                                {option.charAt(0).toUpperCase() + option.slice(1)}
+                              </option>
+                            ))}
+                          </select>
+                          {userData.manualRank && (
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                try {
+                                  const res = await fetch(`${url}/users/reset-rank-to-auto`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ email }),
+                                  });
+                                  const data = await res.json();
+                                  if (res.ok && data.user) {
+                                    setRank(data.user.rank);
+                                    setSuccess('Rank reset to auto-calculation');
+                                  } else {
+                                    throw new Error(data.message);
+                                  }
+                                } catch (error: any) {
+                                  setError(error.message);
+                                }
+                              }}
+                              className="px-3 py-2 bg-gray-500 hover:bg-gray-600 text-white text-xs rounded-lg transition-colors"
+                              title="Reset to Auto"
+                            >
+                              Auto
+                            </button>
+                          )}
+                        </div>
+                        {!userData.manualRank && (
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            Auto-calculated based on deposit: {getAutoRank(deposit)}
+                          </p>
+                        )}
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+                          Current Deposit
+                        </label>
+                        <div className="px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                            ${deposit.toLocaleString('en-US')}
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          This determines auto-calculated rank
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {userData.customRankings?.length > 0 && (
+                    <div className="space-y-4">
+                      {userData.customRankings.map((ranking: Ranking, index: number) => (
+                        <div key={index} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                          <div className="flex items-center justify-between mb-3">
+                            <h5 className="font-semibold text-gray-800 dark:text-gray-200 capitalize">
+                              Level {ranking.level} - {ranking.name}
+                            </h5>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                Minimum Deposit ($)
+                              </label>
+                              <input
+                                type="number"
+                                value={ranking.minimumDeposit}
+                                onChange={(e) => {
+                                  const newRankings = [...userData.customRankings];
+                                  newRankings[index] = { ...ranking, minimumDeposit: parseInt(e.target.value) || 0 };
+                                  setUserData({ ...userData, customRankings: newRankings });
+                                }}
+                                className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              />
+                            </div>
+                            
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                Direct Referrals
+                              </label>
+                              <input
+                                type="number"
+                                value={ranking.directReferral}
+                                onChange={(e) => {
+                                  const newRankings = [...userData.customRankings];
+                                  newRankings[index] = { ...ranking, directReferral: parseInt(e.target.value) || 0 };
+                                  setUserData({ ...userData, customRankings: newRankings });
+                                }}
+                                className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              />
+                            </div>
+                            
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                Referral Deposits ($)
+                              </label>
+                              <input
+                                type="number"
+                                value={ranking.referralDeposits}
+                                onChange={(e) => {
+                                  const newRankings = [...userData.customRankings];
+                                  newRankings[index] = { ...ranking, referralDeposits: parseInt(e.target.value) || 0 };
+                                  setUserData({ ...userData, customRankings: newRankings });
+                                }}
+                                className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              />
+                            </div>
+                            
+                            <div>
+                              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                                Bonus ($)
+                              </label>
+                              <input
+                                type="number"
+                                value={ranking.bonus}
+                                onChange={(e) => {
+                                  const newRankings = [...userData.customRankings];
+                                  newRankings[index] = { ...ranking, bonus: parseInt(e.target.value) || 0 };
+                                  setUserData({ ...userData, customRankings: newRankings });
+                                }}
+                                className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {(!userData.customRankings || userData.customRankings.length === 0) && (
+                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                      <p className="mb-4">This user is using the default ranking system.</p>
+                      <p className="text-sm">Click "Create Custom Rankings" above to set user-specific ranking requirements.</p>
+                    </div>
+                  )}
                 </div>
               )}
 

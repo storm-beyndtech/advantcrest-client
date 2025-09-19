@@ -1,6 +1,7 @@
 // components/DashboardRankOverview.tsx
 import React from 'react';
 import { contextData } from '@/context/AuthContext';
+import { useRankings } from '@/hooks/useRankings';
 import welcome from '../assets/ranks/welcome.png';
 import silver from '../assets/ranks/silver.png';
 import silverPro from '../assets/ranks/silverPro.png';
@@ -21,9 +22,12 @@ interface RankData {
 const DashboardRankOverview: React.FC = () => {
   const { user } = contextData();
   const userDeposit = user.deposit || 0;
+  
+  // Fetch dynamic rankings from API
+  const { rankings: apiRankings, loading, error, isCustom } = useRankings(user.email);
 
-  // Rank hierarchy
-  const ranks: RankData[] = [
+  // Fallback static ranks
+  const fallbackRanks: RankData[] = [
     {
       level: 1,
       name: 'welcome',
@@ -42,7 +46,7 @@ const DashboardRankOverview: React.FC = () => {
     },
     {
       level: 3,
-      name: 'silver pro',
+      name: 'silverPro',
       minimumDeposit: 25000,
       directReferral: 0,
       referralDeposits: 0,
@@ -58,7 +62,7 @@ const DashboardRankOverview: React.FC = () => {
     },
     {
       level: 5,
-      name: 'gold pro',
+      name: 'goldPro',
       minimumDeposit: 100000,
       directReferral: 0,
       referralDeposits: 0,
@@ -82,15 +86,32 @@ const DashboardRankOverview: React.FC = () => {
     },
   ];
 
+  // Use API rankings or fallback
+  const ranks: RankData[] = apiRankings.length > 0 ? apiRankings : fallbackRanks;
+
   const rankImages: Record<string, string> = {
     welcome,
     silver,
-    'silver pro': silverPro,
+    silverPro,
     gold,
-    'gold pro': goldPro,
+    goldPro,
     diamond,
     ambassador,
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="bg-white dark:bg-emerald-950/10 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-blue-400/20 backdrop-blur-sm">
+        <div className="flex items-center justify-center py-8">
+          <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <span>Loading rank status...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Calculate current rank
   const getCurrentRank = (): RankData => {
@@ -168,7 +189,7 @@ const DashboardRankOverview: React.FC = () => {
   return (
     <div className="bg-white dark:bg-emerald-950/10 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-blue-400/20 backdrop-blur-sm">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
           Your Rank Status
         </h3>
@@ -176,6 +197,24 @@ const DashboardRankOverview: React.FC = () => {
           Level {currentRank.level}
         </div>
       </div>
+
+      {/* Custom rankings indicator */}
+      {isCustom && (
+        <div className="mb-4 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <p className="text-xs text-blue-700 dark:text-blue-400">
+            ✨ Custom rankings active
+          </p>
+        </div>
+      )}
+
+      {/* Error indicator */}
+      {error && (
+        <div className="mb-4 p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+          <p className="text-xs text-yellow-700 dark:text-yellow-400">
+            ⚠️ Using default rankings (custom rankings unavailable)
+          </p>
+        </div>
+      )}
 
       {/* Current Rank */}
       <div className="flex items-center gap-4 mb-6">

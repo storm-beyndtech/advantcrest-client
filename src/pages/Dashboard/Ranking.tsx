@@ -1,6 +1,7 @@
 // components/Ranking.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { contextData } from '@/context/AuthContext';
+import { useRankings } from '@/hooks/useRankings';
 import welcome from '../../assets/ranks/welcome.png';
 import silver from '../../assets/ranks/silver.png';
 import silverPro from '../../assets/ranks/silverPro.png';
@@ -173,9 +174,23 @@ const RankCard: React.FC<RankCardProps> = ({
 const Ranking: React.FC = () => {
   const { user } = contextData();
   const userDeposit = user.deposit || 0;
+  
+  // Fetch dynamic rankings from API
+  const { rankings: apiRankings, loading, error, isCustom } = useRankings(user.email);
 
-  // Rank hierarchy with images
-  const ranks: RankData[] = [
+  // Image mapping for rank names
+  const rankImages: Record<string, string> = {
+    welcome,
+    silver,
+    silverPro,
+    gold,
+    goldPro,
+    diamond,
+    ambassador,
+  };
+
+  // Fallback static ranks in case API fails
+  const fallbackRanks: RankData[] = [
     {
       level: 1,
       name: 'welcome',
@@ -241,13 +256,21 @@ const Ranking: React.FC = () => {
     },
   ];
 
+  // Convert API rankings to component format with images
+  const ranks: RankData[] = apiRankings.length > 0 
+    ? apiRankings.map((ranking) => ({
+        ...ranking,
+        imageSrc: rankImages[ranking.name] || welcome,
+      }))
+    : fallbackRanks;
+
   // Get current rank from user data or calculate based on deposit
   const getCurrentRank = (): RankData => {
     // Always use the stored rank from user data (whether manual or auto)
     const userStoredRank = user.rank;
     
     // Find rank by exact name match
-    let rankByName = ranks.find(r => r.name === userStoredRank);
+    const rankByName = ranks.find(r => r.name === userStoredRank);
     
     // If stored rank exists, use it (respects both manual and auto ranks)
     if (rankByName) {
@@ -265,16 +288,62 @@ const Ranking: React.FC = () => {
 
   const currentRank = getCurrentRank();
 
+  // Loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-5 mb-4 rounded-[40px] bg-gray-50 dark:bg-gray-900/20">
+        <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+          <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <span>Loading rankings...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state with fallback
+  if (error) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-center p-3 mb-2 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
+          <p className="text-sm text-yellow-700 dark:text-yellow-400">
+            Unable to load custom rankings. Using default values.
+          </p>
+        </div>
+        <div className="flex items-center justify-center flex-wrap gap-14 p-5 mb-4 rounded-[40px] bg-gray-50 dark:bg-gray-900/20">
+          {ranks.map((rankData) => (
+            <RankCard
+              key={rankData.level}
+              rankData={rankData}
+              isCurrentRank={currentRank.level === rankData.level}
+              isQualified={userDeposit >= rankData.minimumDeposit}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex items-center justify-center flex-wrap gap-14 p-5 mb-4 rounded-[40px] bg-gray-50 dark:bg-gray-900/20">
-      {ranks.map((rankData) => (
-        <RankCard
-          key={rankData.level}
-          rankData={rankData}
-          isCurrentRank={currentRank.level === rankData.level}
-          isQualified={userDeposit >= rankData.minimumDeposit}
-        />
-      ))}
+    <div className="space-y-4">
+      {/* Custom rankings indicator */}
+      {isCustom && (
+        <div className="flex items-center justify-center p-3 mb-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+          <p className="text-sm text-blue-700 dark:text-blue-400">
+            ✨ Using custom rankings configured for your account
+          </p>
+        </div>
+      )}
+      
+      <div className="flex items-center justify-center flex-wrap gap-14 p-5 mb-4 rounded-[40px] bg-gray-50 dark:bg-gray-900/20">
+        {ranks.map((rankData) => (
+          <RankCard
+            key={rankData.level}
+            rankData={rankData}
+            isCurrentRank={currentRank.level === rankData.level}
+            isQualified={userDeposit >= rankData.minimumDeposit}
+          />
+        ))}
+      </div>
     </div>
   );
 };

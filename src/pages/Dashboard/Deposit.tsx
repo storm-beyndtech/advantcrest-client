@@ -10,6 +10,9 @@ interface Coin {
   address: string;
   network: string;
   price: number;
+  priceSource?: 'api' | 'fallback';
+  lastPriceUpdate?: string;
+  change24h?: number;
 }
 
 interface WireTransfer {
@@ -45,14 +48,36 @@ export default function Deposit() {
   const fetchCoins = async () => {
     setFetching(true);
     try {
-      const res = await fetch(`${url}/utils`);
-      const data = await res.json();
+      // Fetch coins with live prices
+      const [coinsRes, utilsRes] = await Promise.all([
+        fetch(`${url}/utils/coins-with-prices`),
+        fetch(`${url}/utils`)
+      ]);
+      
+      const coinsData = await coinsRes.json();
+      const utilsData = await utilsRes.json();
 
-      if (res.ok) {
-        setCoins(data.coins);
-        setCoin(data.coins[0]);
-        setWireTransfer(data.wireTransfer || null);
-      } else throw new Error(data.message);
+      if (coinsRes.ok && utilsRes.ok) {
+        // Use coins with live prices if available, otherwise fallback to static prices
+        const coinsWithPrices = coinsData.coins && coinsData.coins.length > 0 
+          ? coinsData.coins 
+          : utilsData.coins;
+          
+        setCoins(coinsWithPrices);
+        setCoin(coinsWithPrices[0]);
+        setWireTransfer(utilsData.wireTransfer || null);
+      } else {
+        // Fallback to just utils if coins-with-prices fails
+        const fallbackRes = await fetch(`${url}/utils`);
+        const fallbackData = await fallbackRes.json();
+        if (fallbackRes.ok) {
+          setCoins(fallbackData.coins);
+          setCoin(fallbackData.coins[0]);
+          setWireTransfer(fallbackData.wireTransfer || null);
+        } else {
+          throw new Error(fallbackData.message);
+        }
+      }
     } catch (error) {
       console.log(error);
     } finally {
