@@ -102,11 +102,11 @@ const AdminLatestTransactions = ({
       buttons.push(
         <button
           key={i}
-          className={`px-3 py-1 ${
+          className={`px-3 py-1 border rounded-md ${
             currentPage === i
-              ? 'bg-transparent border border-blue-400 text-blue-600 font-medium'
-              : 'border-gray-300 dark:border-gray-600 hover:bg-gray-50/10 dark:text-blue-400'
-          } rounded-md`}
+              ? 'bg-blue-600 border-blue-600 text-white font-medium'
+              : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+          }`}
           onClick={() => paginate(i)}
         >
           {i}
@@ -365,7 +365,7 @@ const AdminLatestTransactions = ({
         </div>
         <div className="flex gap-2">
           <button
-            className="px-3 py-1 border border-gray-300 dark:border-gray-500 rounded-md hover:opacity-80 text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
           >
@@ -375,7 +375,7 @@ const AdminLatestTransactions = ({
           {renderPaginationButtons()}
 
           <button
-            className="px-3 py-1 border border-gray-300 dark:border-gray-500 rounded-md hover:opacity-80 text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => paginate(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
