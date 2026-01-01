@@ -168,7 +168,7 @@ const TradersPage: React.FC<TradersPageProps> = ({ traders, onCopy }) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto sm:p-6">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
@@ -195,39 +195,41 @@ const TradersPage: React.FC<TradersPageProps> = ({ traders, onCopy }) => {
             />
           </div>
 
-          {/* Sort */}
-          <div className="flex gap-2">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="profitMonthly">Monthly Profit</option>
-              <option value="profitYearly">Yearly Profit</option>
-              <option value="winRate">Win Rate</option>
-              <option value="experience">Experience</option>
-              <option value="copiers">Copiers</option>
-              <option value="name">Name</option>
-            </select>
+          <div className="flex gap-3">
+            {/* Sort */}
+            <div className="flex gap-3">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="profitMonthly">Monthly Profit</option>
+                <option value="profitYearly">Yearly Profit</option>
+                <option value="winRate">Win Rate</option>
+                <option value="experience">Experience</option>
+                <option value="copiers">Copiers</option>
+                <option value="name">Name</option>
+              </select>
 
+              <button
+                onClick={() =>
+                  setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'))
+                }
+                className="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700"
+              >
+                {sortOrder === 'desc' ? '↓' : '↑'}
+              </button>
+            </div>
+
+            {/* Filter Toggle */}
             <button
-              onClick={() =>
-                setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'))
-              }
-              className="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700"
+              onClick={() => setShowFilters(!showFilters)}
+              className="max-sm:w-fit flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700"
             >
-              {sortOrder === 'desc' ? '↓' : '↑'}
+              <Filter className="w-4 h-4" />
+              Filters
             </button>
           </div>
-
-          {/* Filter Toggle */}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700"
-          >
-            <Filter className="w-4 h-4" />
-            Filters
-          </button>
         </div>
 
         {/* Filters Panel */}

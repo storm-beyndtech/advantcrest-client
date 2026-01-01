@@ -176,9 +176,10 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
             <li>
               <NavLink
                 to="/dashboard/loyalty-status"
-                className={`text-xs group relative flex items-center gap-2.5 rounded-2xl py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black ${
-                  pathname.includes('affiliate') &&
-                  'bg-[#14161e]/70 !text-cyan-400'
+                className={`group relative flex items-center gap-3 rounded-lg py-3 px-4 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-all duration-200 ${
+                  pathname.includes('loyalty-status')
+                    ? 'bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 text-white border border-emerald-400/30 backdrop-blur-sm'
+                    : 'hover:bg-gray-100 dark:hover:bg-emerald-900/30'
                 }`}
               >
                 <Award strokeWidth={1.8} className={`text-xl`} />
@@ -206,7 +207,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
             />
 
             <li
-              className="cursor-pointer text-xs group relative flex items-center gap-2.5 rounded-2xl py-2.5 px-7.5 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black"
+              className="cursor-pointer group relative flex items-center gap-3 rounded-lg py-3 px-4 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-all duration-200 hover:bg-gray-100 dark:hover:bg-emerald-900/30"
               onClick={() => logout()}
             >
               <LogOut strokeWidth={1.8} className={`text-xl`} />

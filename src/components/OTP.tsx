@@ -297,7 +297,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
 
       // Handle successful verification
       setSubmitStatus('success');
-      login(data.user);
+      login(data.user, data.token);
 
       // Redirect to appropriate page
       setTimeout(() => {

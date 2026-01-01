@@ -64,6 +64,7 @@ import ApprovedDeposits from './pages/Admin/ApprovedDeposits';
 import BannedUsers from './pages/Admin/BannedUsers';
 import ManageTrades from './pages/Admin/ManageTrades';
 import ManageTrader from './pages/Admin/ManageTrader';
+import ActivityLogs from './pages/Admin/ActivityLogs';
 import ActiveUsers from './pages/Admin/ActiveUsers';
 import Admin from './pages/Admin/Admin';
 import AdminLayout from './components/Layouts/AdminLayout';
@@ -337,6 +338,7 @@ function App() {
                     <Route path="/admin/mails" element={<SendMail />} />
                     <Route path="/admin/settings" element={<AdminSettings />} />
                     <Route path="/admin/kyc" element={<KycApproval />} />
+                    <Route path="/admin/activity-logs" element={<ActivityLogs />} />
                   </Route>
 
                   <Route path="/login" element={<Navigate to="/admin/" />} />

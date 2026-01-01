@@ -51,18 +51,19 @@ export default function Deposit() {
       // Fetch coins with live prices
       const [coinsRes, utilsRes] = await Promise.all([
         fetch(`${url}/utils/coins-with-prices`),
-        fetch(`${url}/utils`)
+        fetch(`${url}/utils`),
       ]);
       
       const coinsData = await coinsRes.json();
       const utilsData = await utilsRes.json();
-
+      
       if (coinsRes.ok && utilsRes.ok) {
         // Use coins with live prices if available, otherwise fallback to static prices
-        const coinsWithPrices = coinsData.coins && coinsData.coins.length > 0 
-          ? coinsData.coins 
-          : utilsData.coins;
-          
+        const coinsWithPrices =
+          coinsData.coins && coinsData.coins.length > 0
+            ? coinsData.coins
+            : utilsData.coins;
+
         setCoins(coinsWithPrices);
         setCoin(coinsWithPrices[0]);
         setWireTransfer(utilsData.wireTransfer || null);
@@ -79,37 +80,53 @@ export default function Deposit() {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : 'Unable to load deposit options. Please try again.',
+      );
     } finally {
       setFetching(false);
     }
   };
 
   const checkPendingDeposit = async () => {
+    if (!user) return;
     try {
       const res = await fetch(`${url}/deposits/user/${user.email}`);
       const data = await res.json();
-      
+
       if (res.ok) {
-        const pending = data.find((deposit: any) => 
-          deposit.status === 'pending' && deposit.type === 'deposit'
+        const pending = data.find(
+          (deposit: any) =>
+            deposit.status === 'pending' && deposit.type === 'deposit',
         );
         setPendingDeposit(pending || null);
+      } else if (res.status === 401) {
+        setError('Please sign in again to view your deposit status.');
+      } else {
+        throw new Error(data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : 'Unable to load deposit status.',
+      );
     }
   };
 
   const cancelDeposit = async () => {
     if (!pendingDeposit) return;
-    
+
     try {
       setLoading(true);
       const res = await fetch(`${url}/deposits/${pendingDeposit._id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
-      
+
       if (res.ok) {
         setPendingDeposit(null);
         setSuccess(false);
@@ -127,9 +144,10 @@ export default function Deposit() {
   };
 
   useEffect(() => {
+    if (!user) return;
     fetchCoins();
     checkPendingDeposit();
-  }, []);
+  }, [user]);
 
   const sendDeposit = async (e: any) => {
     e.preventDefault();
@@ -249,7 +267,17 @@ export default function Deposit() {
     }
   };
 
-  if (fetching) return <PageLoader />;
+  if (!user || fetching) return <PageLoader />;
+
+  if (error && !coin) {
+    return (
+      <div className="w-full flex justify-center m-auto">
+        <div className="w-full max-w-lg p-6 bg-white dark:bg-emerald-950/10 border border-gray-200 dark:border-emerald-800/30 rounded-xl shadow-lg">
+          <Alert type="error" message={error} />
+        </div>
+      </div>
+    );
+  }
 
   // If user has pending deposit, show that instead of form
   if (pendingDeposit && !success && !showWalletAddress) {
@@ -267,27 +295,34 @@ export default function Deposit() {
               Awaiting Approval
             </span>
           </div>
-          
+
           <div className="space-y-3 mb-6">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-yellow-700 dark:text-yellow-400">Method:</span>
+              <span className="text-sm text-yellow-700 dark:text-yellow-400">
+                Method:
+              </span>
               <span className="text-sm font-medium text-yellow-900 dark:text-yellow-200">
-                {pendingDeposit.depositMethod === 'wire' 
-                  ? 'Wire Transfer' 
-                  : `${pendingDeposit.walletData?.coinName || 'Crypto'} Deposit`
-                }
+                {pendingDeposit.depositMethod === 'wire'
+                  ? 'Wire Transfer'
+                  : `${
+                      pendingDeposit.walletData?.coinName || 'Crypto'
+                    } Deposit`}
               </span>
             </div>
-            
+
             <div className="flex justify-between items-center">
-              <span className="text-sm text-yellow-700 dark:text-yellow-400">Amount:</span>
+              <span className="text-sm text-yellow-700 dark:text-yellow-400">
+                Amount:
+              </span>
               <span className="text-lg font-bold text-yellow-900 dark:text-yellow-200">
                 ${pendingDeposit.amount.toLocaleString()} USD
               </span>
             </div>
-            
+
             <div className="flex justify-between items-center">
-              <span className="text-sm text-yellow-700 dark:text-yellow-400">Date:</span>
+              <span className="text-sm text-yellow-700 dark:text-yellow-400">
+                Date:
+              </span>
               <span className="text-sm font-medium text-yellow-900 dark:text-yellow-200">
                 {new Date(pendingDeposit.date).toLocaleDateString()}
               </span>
@@ -302,7 +337,7 @@ export default function Deposit() {
             >
               {loading ? 'Cancelling...' : 'Cancel Deposit'}
             </button>
-            
+
             <button
               onClick={checkPendingDeposit}
               className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors"
@@ -310,7 +345,7 @@ export default function Deposit() {
               Refresh Status
             </button>
           </div>
-          
+
           {error && <Alert type="error" message={error} />}
         </div>
       </div>
@@ -599,51 +634,67 @@ export default function Deposit() {
               </p>
             </div>
           </div>
-        ) : (success || depositConfirmed) && (
-          <div className="w-full flex justify-center m-auto">
-            <div className="w-full max-w-lg p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-2 border-green-200 dark:border-green-800/30 rounded-xl shadow-lg text-center">
-              <div className="flex items-center justify-center mb-4">
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-2">
-                  <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                  </svg>
+        ) : (
+          (success || depositConfirmed) && (
+            <div className="w-full flex justify-center m-auto">
+              <div className="w-full max-w-lg p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-2 border-green-200 dark:border-green-800/30 rounded-xl shadow-lg text-center">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-2">
+                    <svg
+                      className="w-6 h-6 text-green-600 dark:text-green-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      ></path>
+                    </svg>
+                  </div>
                 </div>
-              </div>
-              
-              <h3 className="text-xl font-semibold text-green-800 dark:text-green-300 mb-3">
-                Deposit Request Submitted!
-              </h3>
-              
-              <p className="text-sm text-green-700 dark:text-green-400 mb-6">
-                Your deposit of <span className="font-semibold">${amount.toLocaleString()} USD</span> has been submitted and is now pending approval.
-                {depositMethod === 'wire' 
-                  ? ' Please complete the wire transfer using the banking details provided.'
-                  : ' Thank you for confirming your cryptocurrency transaction.'
-                }
-              </p>
 
-              <div className="bg-green-100 dark:bg-green-900/30 p-4 rounded-lg mb-4">
-                <p className="text-xs text-green-600 dark:text-green-400">
-                  Status: <span className="font-semibold">Pending Approval</span>
-                </p>
-                <p className="text-xs text-green-500 dark:text-green-500 mt-1">
-                  You will be notified once your deposit is processed.
-                </p>
-              </div>
+                <h3 className="text-xl font-semibold text-green-800 dark:text-green-300 mb-3">
+                  Deposit Request Submitted!
+                </h3>
 
-              <button
-                onClick={() => {
-                  setSuccess(false);
-                  setShowWalletAddress(false);
-                  setDepositConfirmed(false);
-                  checkPendingDeposit();
-                }}
-                className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors"
-              >
-                Continue
-              </button>
+                <p className="text-sm text-green-700 dark:text-green-400 mb-6">
+                  Your deposit of{' '}
+                  <span className="font-semibold">
+                    ${amount.toLocaleString()} USD
+                  </span>{' '}
+                  has been submitted and is now pending approval.
+                  {depositMethod === 'wire'
+                    ? ' Please complete the wire transfer using the banking details provided.'
+                    : ' Thank you for confirming your cryptocurrency transaction.'}
+                </p>
+
+                <div className="bg-green-100 dark:bg-green-900/30 p-4 rounded-lg mb-4">
+                  <p className="text-xs text-green-600 dark:text-green-400">
+                    Status:{' '}
+                    <span className="font-semibold">Pending Approval</span>
+                  </p>
+                  <p className="text-xs text-green-500 dark:text-green-500 mt-1">
+                    You will be notified once your deposit is processed.
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setSuccess(false);
+                    setShowWalletAddress(false);
+                    setDepositConfirmed(false);
+                    checkPendingDeposit();
+                  }}
+                  className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors"
+                >
+                  Continue
+                </button>
+              </div>
             </div>
-          </div>
+          )
         )}
       </>
     )

@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext.tsx';
 import { BrowserRouter as Router } from 'react-router-dom';
 import React from 'react';
 import ScrollToTop from './components/ScrollToTop.tsx';
+import './lib/setupFetchAuth';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

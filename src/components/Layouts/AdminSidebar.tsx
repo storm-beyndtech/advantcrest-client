@@ -17,6 +17,7 @@ import {
   ArrowUpFromLine,
   ArrowDownFromLine,
   User,
+  ListChecks,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -189,6 +190,21 @@ export default function AdminSidebar({
                   className="text-sky-400 text-xl"
                 />
                 Kyc
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
+                to="/admin/activity-logs"
+                className={`text-sm group relative flex items-center gap-2.5 rounded-sm py-2.5 px-4 text-gray-300 font-montserrat duration-300 ease-in-out hover:bg-black dark:hover:bg-black ${
+                  pathname.includes('activity-logs') && 'bg-black'
+                }`}
+              >
+                <ListChecks
+                  strokeWidth={1.5}
+                  className="text-sky-400 text-xl"
+                />
+                Activity Logs
               </NavLink>
             </li>
           </ul>

@@ -88,7 +88,7 @@ const Login: React.FC = () => {
 
       // Handle successful login
       setSubmitStatus('success');
-      login(resData.user);
+      login(resData.user, resData.token);
       // Redirect or handle successful login
       setTimeout(() => {
         navigate('/dashboard');

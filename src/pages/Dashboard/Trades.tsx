@@ -25,8 +25,13 @@ export default function Trades() {
 
   const fetchTrades = async () => {
     try {
-    const res = await fetch(`${url}/trades/user/${user._id}/trader/${user.traderId}`);
-    const data = await res.json();
+      if (!user?.traderId) {
+        setTradeData([]);
+        return;
+      }
+
+      const res = await fetch(`${url}/trades/user/${user._id}/trader/${user.traderId}`);
+      const data = await res.json();
 
       if (res.ok) {
         const filteredTrades = data.filter(
@@ -90,7 +95,7 @@ export default function Trades() {
 
   useEffect(() => {
     fetchTrades();
-  }, [user]);
+  }, [user?.traderId]);
 
   useEffect(() => {
     fetchTraders();

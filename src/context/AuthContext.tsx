@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { clearSession, persistSession, withAuthHeaders } from '@/lib/authHeaders';
 
 const AuthContext = createContext<any>(null);
 
@@ -10,13 +11,13 @@ export const AuthProvider = ({ children }: any) => {
   const url = import.meta.env.VITE_REACT_APP_SERVER_URL;
   const location = useLocation();
 
-  const login = (userData: any) => {
+  const login = (userData: any, token?: string) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    persistSession(userData, token);
   };
 
   const logout = () => {
-    localStorage.removeItem('user');
+    clearSession();
     setUser(null);
   };
 
@@ -27,6 +28,7 @@ export const AuthProvider = ({ children }: any) => {
     try {
       const res = await fetch(`${url}/users/${userId}`, {
         signal: controller.signal,
+        headers: withAuthHeaders(),
       });
       const data = await res.json();
 

@@ -37,6 +37,11 @@ export default function Dashboard() {
 
   const fetchTrades = async () => {
     try {
+      if (!user?.traderId) {
+        setTrades([]);
+        return;
+      }
+
       const res = await fetch(
         `${url}/trades/user/${user._id}/trader/${user.traderId}`,
       );
@@ -103,7 +108,7 @@ export default function Dashboard() {
   useEffect(() => {
     fetchTraders();
     fetchTrades();
-  }, [user]);
+  }, [user?.traderId]);
 
   if (!user) return <PageLoader />;
 

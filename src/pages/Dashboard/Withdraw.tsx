@@ -51,15 +51,17 @@ export default function Withdraw() {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setError(error instanceof Error ? error.message : 'Unable to load withdrawal options. Please try again.');
     } finally {
       setFetching(false);
     }
   };
 
   useEffect(() => {
+    if (!user) return;
     fetchCoins();
-  }, []);
+  }, [user]);
 
   const sendWithdraw = async (e: any) => {
     e.preventDefault();
@@ -142,7 +144,17 @@ export default function Withdraw() {
     if (coin) setConvertedAmount(roundNumber(newAmount / coin.price));
   };
 
-  if (fetching) return <PageLoader />;
+  if (!user || fetching) return <PageLoader />;
+
+  if (error && !coin) {
+    return (
+      <div className="w-full flex justify-center m-auto">
+        <div className="w-full max-w-lg p-6 bg-white dark:bg-gray-900/10 border border-gray-200 dark:border-gray-900 rounded-xl shadow-lg">
+          <Alert type="error" message={error} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     coin && (

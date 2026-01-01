@@ -30,6 +30,14 @@ const RecentTrades = () => {
   // Function to fetch trades
   const fetchTrades = async () => {
     setLoading(true);
+
+    if (!user?.traderId) {
+      setTrades([]);
+      setLastUpdated(null);
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch(
         `${url}/trades/user/${user._id}/trader/${user.traderId}`,
@@ -69,7 +77,7 @@ const RecentTrades = () => {
   // Fetch trades on component mount
   useEffect(() => {
     fetchTrades();
-  }, []);
+  }, [user?.traderId]);
 
   // Filter trades based on search query
   const filteredTrades = trades.filter((trade) => {
