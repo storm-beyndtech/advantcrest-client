@@ -1,8 +1,9 @@
 import { getAuthToken } from "./authHeaders";
 
-const originalFetch = window.fetch;
+const originalFetch: typeof window.fetch = window.fetch.bind(window);
 
-window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+// Override global fetch to always attach auth header if available
+window.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
 	const token = getAuthToken();
 	const headers = new Headers(init?.headers || {});
 
@@ -14,4 +15,4 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
 		...init,
 		headers,
 	});
-};
+}) as typeof window.fetch;
