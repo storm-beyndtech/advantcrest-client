@@ -172,9 +172,14 @@ export default function ActivityLogs() {
 
             <div className="mt-3 grid grid-cols-2 gap-2 text-2xs text-gray-400">
               <div>
-                <div className="text-gray-500">Target</div>
-                <div className="text-gray-200">
-                  {log.targetCollection || '-'} {log.targetId || ''}
+              <div className="text-gray-500">Target</div>
+                <div className="text-gray-200 break-words">
+                  <div className="truncate" title={`${log.targetCollection || '-'} ${log.targetId || ''}`}>
+                    {log.targetCollection || '-'}
+                  </div>
+                  <div className="text-2xs text-gray-500 break-words">
+                    {log.targetId || ''}
+                  </div>
                 </div>
               </div>
               <div>
