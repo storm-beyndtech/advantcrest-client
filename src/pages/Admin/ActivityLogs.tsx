@@ -113,8 +113,8 @@ export default function ActivityLogs() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-100">Admin Activity</h2>
-          <p className="text-sm text-gray-400">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Admin Activity</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             Every admin-surface action with IP, location, and metadata.
           </p>
         </div>
@@ -123,12 +123,12 @@ export default function ActivityLogs() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search email, target, IP..."
-            className="w-full sm:w-64 rounded-lg border border-gray-700 bg-[#0f1624] px-3 py-2 text-sm text-gray-100 placeholder:text-gray-500 focus:border-sky-500 focus:outline-none"
+            className="w-full sm:w-64 rounded-lg border border-gray-300 bg-white dark:border-gray-700 dark:bg-[#0f1624] px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 focus:border-sky-500 focus:outline-none"
           />
           <select
             value={actionFilter}
             onChange={(e) => setActionFilter(e.target.value)}
-            className="w-full sm:w-48 rounded-lg border border-gray-700 bg-[#0f1624] px-3 py-2 text-sm text-gray-100 focus:border-sky-500 focus:outline-none"
+            className="w-full sm:w-48 rounded-lg border border-gray-300 bg-white dark:border-gray-700 dark:bg-[#0f1624] px-3 py-2 text-sm text-gray-100 focus:border-sky-500 focus:outline-none"
           >
             <option value="all">All actions</option>
             {uniqueActions.map((action) => (
@@ -155,25 +155,25 @@ export default function ActivityLogs() {
         {filtered.map((log) => (
           <div
             key={log._id}
-            className="min-w-0 rounded-xl border border-gray-800 bg-gradient-to-br from-[#0f1624] to-[#0b1220] p-4 shadow-lg"
+            className="min-w-0 rounded-xl border border-gray-300 bg-white p-4 shadow-lg dark:border-gray-800 dark:bg-gradient-to-br dark:from-[#0f1624] dark:to-[#0b1220]"
           >
             <div className="flex items-start justify-between gap-2">
               <div className="space-y-1">
-                <div className="text-xs uppercase tracking-wide text-sky-400">
+                <div className="text-xs uppercase tracking-wide text-sky-600 dark:text-sky-400">
                   {ACTION_LABELS[log.action] || log.action}
                 </div>
-                <div className="text-sm text-gray-100">{log.actorEmail || 'Unknown'}</div>
+                <div className="text-sm text-gray-900 dark:text-gray-100">{log.actorEmail || 'Unknown'}</div>
                 <div className="text-2xs text-gray-500">{log.actorRole || 'user'}</div>
               </div>
-              <div className="text-right text-2xs text-gray-400">
+              <div className="text-right text-2xs text-gray-500 dark:text-gray-400">
                 {new Date(log.createdAt).toLocaleString()}
               </div>
             </div>
 
-            <div className="mt-3 grid grid-cols-2 gap-2 text-2xs text-gray-400">
+            <div className="mt-3 grid grid-cols-2 gap-2 text-2xs text-gray-500 dark:text-gray-400">
               <div>
               <div className="text-gray-500">Target</div>
-                <div className="text-gray-200 break-words">
+                <div className="text-gray-800 break-words dark:text-gray-200">
                   <div className="truncate" title={`${log.targetCollection || '-'} ${log.targetId || ''}`}>
                     {log.targetCollection || '-'}
                   </div>
@@ -184,7 +184,7 @@ export default function ActivityLogs() {
               </div>
               <div>
                 <div className="text-gray-500">IP / Location</div>
-                <div className="text-gray-200">
+                <div className="text-gray-800 dark:text-gray-200">
                   {log.ipAddress || 'n/a'}
                   <br />
                   {[log.location?.city, log.location?.region, log.location?.country]
@@ -195,9 +195,9 @@ export default function ActivityLogs() {
             </div>
 
             {log.metadata && (
-              <div className="mt-3 rounded-lg bg-[#111a2a] p-3 text-2xs text-gray-300">
+              <div className="mt-3 rounded-lg bg-gray-100 p-3 text-2xs text-gray-700 dark:bg-[#111a2a] dark:text-gray-300">
                 <div className="text-gray-500 mb-1">Metadata</div>
-                <pre className="max-h-32 overflow-auto whitespace-pre-wrap break-words text-gray-200">
+                <pre className="max-h-32 overflow-auto whitespace-pre-wrap break-words text-gray-800 dark:text-gray-200">
                   {JSON.stringify(log.metadata, null, 2)}
                 </pre>
               </div>
