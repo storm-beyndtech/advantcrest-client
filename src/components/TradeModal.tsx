@@ -1,6 +1,7 @@
 import { contextData } from '@/context/AuthContext';
 import { useState } from 'react';
 import Alert from './ui/Alert';
+import { apiPost } from '@/utils/api';
 
 export default function TradeModal({ tradeType, toggleModal }: any) {
   const [amount, setAmount] = useState(0);
@@ -34,10 +35,10 @@ export default function TradeModal({ tradeType, toggleModal }: any) {
     setSuccess(false);
 
     try {
-      const res = await fetch(`${url}/trades`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: user._id, amount, package: tradeType }),
+      const res = await apiPost(`${url}/trades`, {
+        id: user._id,
+        amount,
+        package: tradeType,
       });
       const data = await res.json();
 

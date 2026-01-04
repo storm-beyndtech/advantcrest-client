@@ -6,6 +6,7 @@ import Alert from './ui/Alert';
 import QuickAddModal from './QuickAddModal';
 import { Plus } from 'lucide-react';
 import { useRankings } from '@/hooks/useRankings';
+import { apiPut } from '@/utils/api';
 
 interface Ranking {
   level: number;
@@ -119,11 +120,7 @@ export default function EditUserModal({ userData: initialUserData, handleUserDat
 
     try {
       setLoading(true);
-      const res = await fetch(`${url}/users/update-profile`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData),
-      });
+      const res = await apiPut(`${url}/users/update-profile`, profileData);
       const data = await res.json();
 
       if (res.ok) setSuccess(data.message || 'User update successful');
@@ -154,11 +151,7 @@ export default function EditUserModal({ userData: initialUserData, handleUserDat
         [type]: newAmount,
       };
 
-      const res = await fetch(`${url}/users/update-profile`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      });
+      const res = await apiPut(`${url}/users/update-profile`, updateData);
 
       const data = await res.json();
 
@@ -689,11 +682,7 @@ export default function EditUserModal({ userData: initialUserData, handleUserDat
                               type="button"
                               onClick={async () => {
                                 try {
-                                  const res = await fetch(`${url}/users/reset-rank-to-auto`, {
-                                    method: 'PUT',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ email }),
-                                  });
+                                  const res = await apiPut(`${url}/users/reset-rank-to-auto`, { email });
                                   const data = await res.json();
                                   if (res.ok && data.user) {
                                     setRank(data.user.rank);

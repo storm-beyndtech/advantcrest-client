@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CiSaveDown2 } from 'react-icons/ci';
+import { apiGet } from '@/utils/api';
 
 export default function AdminDepositCards() {
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -10,7 +11,7 @@ export default function AdminDepositCards() {
 
   const fetchUserTransactions = async () => {
     try {
-      const res = await fetch(`${url}/transactions`);
+      const res = await apiGet(`${url}/transactions`);
       const data = await res.json();
 
       if (res.ok) setTransactions(data);

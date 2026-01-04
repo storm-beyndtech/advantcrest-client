@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Alert from './ui/Alert';
+import { apiPut } from '@/utils/api';
 
 interface ITransactionData {
   amountInUSD: number;
@@ -37,10 +38,9 @@ export default function EditTransaction({
 
     try {
       setLoading(true);
-      const res = await fetch(`${url}/transactions/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount, convertedAmount: amountInCrypto }),
+      const res = await apiPut(`${url}/transactions/${id}`, {
+        amount,
+        convertedAmount: amountInCrypto,
       });
 
       const data = await res.json();

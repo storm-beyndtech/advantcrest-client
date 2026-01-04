@@ -2,6 +2,7 @@ import { contextData } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
 import PageLoader from '@/components/PageLoader';
 import Alert from '@/components/ui/Alert';
+import { apiGet, apiPost } from '@/utils/api';
 
 interface Coin {
   name: string;
@@ -33,7 +34,7 @@ export default function Withdraw() {
     setFetching(true);
     try {
       // Fetch coins with live prices
-      const res = await fetch(`${url}/utils/coins-with-prices`);
+      const res = await apiGet(`${url}/utils/coins-with-prices`, false);
       const data = await res.json();
 
       if (res.ok && data.coins && data.coins.length > 0) {
@@ -41,7 +42,7 @@ export default function Withdraw() {
         setCoin(data.coins[0]);
       } else {
         // Fallback to static prices
-        const fallbackRes = await fetch(`${url}/utils`);
+        const fallbackRes = await apiGet(`${url}/utils`, false);
         const fallbackData = await fallbackRes.json();
         if (fallbackRes.ok) {
           setCoins(fallbackData.coins);
@@ -97,18 +98,17 @@ export default function Withdraw() {
     setSuccess(false);
 
     try {
-      const res = await fetch(`${url}/withdrawals`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const res = await apiPost(
+        `${url}/withdrawals`,
+        {
           id: user._id,
           amount,
           convertedAmount,
           coinName: coin?.name,
           address,
           network,
-        }),
-      });
+        },
+      );
 
       const data = await res.json();
 

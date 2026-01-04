@@ -1,6 +1,7 @@
 import Alert from '@/components/ui/Alert';
 import { useEffect, useState } from 'react';
 import { Power, PowerOff, Settings, CreditCard, Coins } from 'lucide-react';
+import { apiGet, apiPut } from '@/utils/api';
 
 interface WireTransferData {
   bankName: string;
@@ -37,7 +38,7 @@ export default function AdminSettings() {
 
   const fetchUtils = async () => {
     try {
-      const res = await fetch(`${url}/utils`);
+      const res = await apiGet(`${url}/utils`, false);
       const data = await res.json();
 
       if (res.ok) {
@@ -80,11 +81,7 @@ export default function AdminSettings() {
     try {
       setLoading(true);
       const updateData = activeTab === 'coins' ? { coins } : { wireTransfer };
-      const res = await fetch(`${url}/utils/update/${utilId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      });
+      const res = await apiPut(`${url}/utils/update/${utilId}`, updateData);
       const data = await res.json();
 
       if (res.ok) setSuccess(true);
@@ -99,13 +96,9 @@ export default function AdminSettings() {
   const toggleMaintenanceMode = async () => {
     setMaintenanceLoading(true);
     try {
-      const res = await fetch(`${url}/utils/maintenance-mode`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          enabled: !maintenanceMode,
-          message: maintenanceMessage,
-        }),
+      const res = await apiPut(`${url}/utils/maintenance-mode`, {
+        enabled: !maintenanceMode,
+        message: maintenanceMessage,
       });
 
       if (res.ok) {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { apiGet } from '@/utils/api';
 
 interface Ranking {
   level: number;
@@ -36,7 +37,7 @@ export const useRankings = (userEmail?: string): UseRankingsReturn => {
       setLoading(true);
       setError(null);
       
-      const response = await fetch(`${url}/users/rankings/${userEmail}`);
+      const response = await apiGet(`${url}/users/rankings/${userEmail}`);
       const data = await response.json();
 
       if (response.ok) {

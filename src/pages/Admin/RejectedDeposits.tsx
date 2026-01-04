@@ -1,6 +1,7 @@
 import ManageDepositModal from "@/components/ManageDepositModal";
 import { useEffect, useState } from "react";
 import { ITransaction } from '@/types/transaction';
+import { apiGet } from '@/utils/api';
 
 export default function RejectedDeposits() {
   const [deposits, setDeposits] = useState<ITransaction[]>([])
@@ -22,7 +23,7 @@ export default function RejectedDeposits() {
   
   const fetchDeposits = async () => {
     try {
-      const res = await fetch(`${url}/deposits`);
+      const res = await apiGet(`${url}/deposits`);
       const data = await res.json();
 
       if (res.ok) setDeposits(data.filter((dep:any) => dep.status === "failed"))
@@ -105,7 +106,6 @@ export default function RejectedDeposits() {
       </div>
   )
 }
-
 
 
 

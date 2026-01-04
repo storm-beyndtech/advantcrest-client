@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import s from './CryptoCarousel.module.css';
+import { apiGet } from '@/utils/api';
 
 interface CryptoData {
   name: string;
@@ -14,9 +15,10 @@ const CryptoCarousel: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,ripple,cardano,dogecoin,chainlink,litecoin,stellar,uniswap,solana,polkadot,usd-coin,binancecoin,cosmos,internet-computer,filecoin,avalanche-2,aave,polygon,monero,tezos,tron,neo,dash,theta,fantom,vechain,bitcoin-cash,algorand,ethereum-classic,compound,shiba-inu,wrapped-bitcoin,hedera-hashgraph,huobi-token,theta-fuel,terra,maker,pancakeswap,compound-governance-token,okb,stellar,luna,elrond,near,dydx'
-        );        
+        const response = await apiGet(
+          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,ripple,cardano,dogecoin,chainlink,litecoin,stellar,uniswap,solana,polkadot,usd-coin,binancecoin,cosmos,internet-computer,filecoin,avalanche-2,aave,polygon,monero,tezos,tron,neo,dash,theta,fantom,vechain,bitcoin-cash,algorand,ethereum-classic,compound,shiba-inu,wrapped-bitcoin,hedera-hashgraph,huobi-token,theta-fuel,terra,maker,pancakeswap,compound-governance-token,okb,stellar,luna,elrond,near,dydx',
+          false,
+        );
 
         if (!response.ok) {
           throw new Error('Failed to fetch data');

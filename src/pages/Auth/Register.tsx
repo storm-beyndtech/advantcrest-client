@@ -5,6 +5,7 @@ import logo from '../../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import DarkModeSwitcher from '@/components/Layouts/DarkModeSwitcher';
 import { contextData } from '@/context/AuthContext';
+import { apiPost } from '@/utils/api';
 
 // Placeholder types for form state and errors
 interface RegistrationFormState {
@@ -85,13 +86,7 @@ const Register: React.FC = () => {
     };
     try {
       // Placeholder for actual API call
-      const response = await fetch(`${url}/users/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bodyData),
-      });
+      const response = await apiPost(`${url}/users/signup`, bodyData, false);
 
       const resData = await response.json();
 

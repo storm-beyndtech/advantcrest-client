@@ -2,6 +2,7 @@ import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import { Calendar, Camera, Upload } from 'lucide-react';
 import Alert from './ui/Alert';
 import { contextData } from '@/context/AuthContext';
+import { apiPost } from '@/utils/api';
 
 // Define types
 type DocumentType = 'id' | 'passport' | 'driver';
@@ -144,10 +145,7 @@ export default function ProofOfIdentificationForm(): JSX.Element {
       const endpoint = `${url}/kycs`;
 
       // In a real implementation, you would use:
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        body: submitData,
-      });
+      const response = await apiPost(endpoint, submitData);
 
       const resData = await response.json();
 

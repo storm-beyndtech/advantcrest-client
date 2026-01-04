@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { GrClose } from 'react-icons/gr';
 import Alert from './ui/Alert';
+import { apiPut } from '@/utils/api';
 
 export default function ManageWithdrawalModal({
   toggleModal,
@@ -27,14 +28,10 @@ export default function ManageWithdrawalModal({
     else setFailedLoading(true);
 
     try {
-      const res = await fetch(`${url}/withdrawals/${withdrawal?._id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          status,
-          email: withdrawal?.user.email,
-          amount: withdrawal?.amount,
-        }),
+      const res = await apiPut(`${url}/withdrawals/${withdrawal?._id}`, {
+        status,
+        email: withdrawal?.user.email,
+        amount: withdrawal?.amount,
       });
 
       const data = await res.json();

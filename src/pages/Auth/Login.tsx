@@ -5,6 +5,7 @@ import logo from '../../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import DarkModeSwitcher from '@/components/Layouts/DarkModeSwitcher';
 import { contextData } from '@/context/AuthContext';
+import { apiPost } from '@/utils/api';
 
 // Placeholder types for form state and errors
 interface LoginFormState {
@@ -72,19 +73,9 @@ const Login: React.FC = () => {
     };
     try {
       // Placeholder for actual API call
-      const response = await fetch(`${url}/users/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
+      const response = await apiPost(`${url}/users/login`, payload, false);
       const resData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(resData.message);
-      }
+      if (!response.ok) throw new Error(resData.message);
 
       // Handle successful login
       setSubmitStatus('success');

@@ -2,6 +2,7 @@ import ManageDepositModal from '@/components/ManageDepositModal';
 import { useEffect, useState } from 'react';
 import { Search, Clock, RefreshCw, Wallet, Building2 } from 'lucide-react';
 import { ITransaction, User } from '@/types/transaction';
+import { apiGet } from '@/utils/api';
 
 export default function PendingDeposits() {
   const [deposits, setDeposits] = useState<ITransaction[]>([]);
@@ -26,7 +27,7 @@ export default function PendingDeposits() {
   const fetchDeposits = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${url}/deposits`);
+      const res = await apiGet(`${url}/deposits`);
       const data = await res.json();
 
       if (res.ok) {
@@ -282,4 +283,3 @@ export default function PendingDeposits() {
     </>
   );
 }
-

@@ -3,6 +3,7 @@ import PageLoader from '@/components/PageLoader';
 import { contextData } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
 import { Search, Users, RefreshCw, Trash2 } from 'lucide-react';
+import { apiGet, apiDelete } from '@/utils/api';
 
 export default function ActiveUsers() {
   const { user: admin } = contextData();
@@ -20,7 +21,7 @@ export default function ActiveUsers() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(`${url}/users`);
+      const res = await apiGet(`${url}/users`);
       const data = await res.json();
 
       if (res.ok) {
@@ -47,11 +48,7 @@ export default function ActiveUsers() {
   const handleDeleteUser = async (userId: string) => {
     try {
       setDeleting(true);
-      const res = await fetch(`${url}/users`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userIds: [userId] }),
-      });
+      const res = await apiDelete(`${url}/users`, true, { userIds: [userId] });
       const data = await res.json();
 
       if (res.ok) {

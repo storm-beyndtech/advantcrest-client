@@ -4,6 +4,7 @@ import PageLoader from '@/components/PageLoader';
 import { GoInfo } from 'react-icons/go';
 import Alert from '@/components/ui/Alert';
 import { Copy } from 'lucide-react';
+import { apiDelete, apiGet, apiPost } from '@/utils/api';
 
 interface Coin {
   name: string;
@@ -50,8 +51,8 @@ export default function Deposit() {
     try {
       // Fetch coins with live prices
       const [coinsRes, utilsRes] = await Promise.all([
-        fetch(`${url}/utils/coins-with-prices`),
-        fetch(`${url}/utils`),
+        apiGet(`${url}/utils/coins-with-prices`, false),
+        apiGet(`${url}/utils`, false),
       ]);
       
       const coinsData = await coinsRes.json();
@@ -69,7 +70,7 @@ export default function Deposit() {
         setWireTransfer(utilsData.wireTransfer || null);
       } else {
         // Fallback to just utils if coins-with-prices fails
-        const fallbackRes = await fetch(`${url}/utils`);
+        const fallbackRes = await apiGet(`${url}/utils`, false);
         const fallbackData = await fallbackRes.json();
         if (fallbackRes.ok) {
           setCoins(fallbackData.coins);
@@ -94,7 +95,7 @@ export default function Deposit() {
   const checkPendingDeposit = async () => {
     if (!user) return;
     try {
-      const res = await fetch(`${url}/deposits/user/${user.email}`);
+      const res = await apiGet(`${url}/deposits/user/${user.email}`);
       const data = await res.json();
 
       if (res.ok) {
@@ -123,9 +124,7 @@ export default function Deposit() {
 
     try {
       setLoading(true);
-      const res = await fetch(`${url}/deposits/${pendingDeposit._id}`, {
-        method: 'DELETE',
-      });
+      const res = await apiDelete(`${url}/deposits/${pendingDeposit._id}`);
 
       if (res.ok) {
         setPendingDeposit(null);
@@ -180,11 +179,7 @@ export default function Deposit() {
         },
       };
 
-      const res = await fetch(`${url}/deposits`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      const res = await apiPost(`${url}/deposits`, payload);
 
       const data = await res.json();
 
@@ -248,11 +243,7 @@ export default function Deposit() {
         coinName: coin?.name,
       };
 
-      const res = await fetch(`${url}/deposits`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      const res = await apiPost(`${url}/deposits`, payload);
 
       const data = await res.json();
 

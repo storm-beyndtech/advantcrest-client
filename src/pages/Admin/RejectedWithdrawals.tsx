@@ -1,5 +1,6 @@
-  import ManageWithdrawalModal from "@/components/ManageWithdrawalModal";
+import ManageWithdrawalModal from "@/components/ManageWithdrawalModal";
 import { useEffect, useState } from "react";
+import { apiGet } from "@/utils/api";
 
 export default function RejectedWithdrawals() {
   const [withdrawals, setWithdrawals] = useState<ITransaction[]>([])
@@ -21,7 +22,7 @@ export default function RejectedWithdrawals() {
   
   const fetchWithdrawals = async () => {
     try {
-      const res = await fetch(`${url}/withdrawals`);
+      const res = await apiGet(`${url}/withdrawals`);
       const data = await res.json();
 
       if (res.ok) setWithdrawals(data.filter((wth:any) => wth.status === "failed"))
@@ -138,4 +139,3 @@ interface ITransaction {
   walletData: WalletData;
   tradeData: TradeData;
 }
-

@@ -1,6 +1,7 @@
 import ManageWithdrawalModal from '@/components/ManageWithdrawalModal';
 import { useEffect, useState } from 'react';
 import { Search, CheckCircle2, RefreshCw, Wallet } from 'lucide-react';
+import { apiGet } from '@/utils/api';
 
 export default function ApprovedWithdrawals() {
   const [withdrawals, setWithdrawals] = useState<ITransaction[]>([]);
@@ -29,7 +30,7 @@ export default function ApprovedWithdrawals() {
   const fetchWithdrawals = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${url}/withdrawals`);
+      const res = await apiGet(`${url}/withdrawals`);
       const data = await res.json();
 
       if (res.ok) {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { User, Upload, Mail, Bell, RefreshCw, AlertCircle } from 'lucide-react';
 import { contextData } from '@/context/AuthContext';
+import { apiGet, apiPut } from '@/utils/api';
 
 interface FormData {
   profileImage: File | null;
@@ -23,7 +24,7 @@ const url = import.meta.env.VITE_REACT_APP_SERVER_URL;
 const fetchProfile = async (user: any) => {
   // let profileData: FormData;
   try {
-    const res = await fetch(`${url}/users/${user._id}`);
+    const res = await apiGet(`${url}/users/${user._id}`);
     const resData = await res.json();
 
     if (!res.ok) {
@@ -38,10 +39,7 @@ const fetchProfile = async (user: any) => {
 
 const updateProfile = async (data: FormData): Promise<void> => {
   try {
-    const response = await fetch(`${url}/users/update-profile`, {
-      method: 'PUT',
-      body: data as any,
-    });
+    const response = await apiPut(`${url}/users/update-profile`, data as any);
 
     if (!response.ok) {
       const errorData = await response.json();

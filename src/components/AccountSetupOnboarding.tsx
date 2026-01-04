@@ -7,6 +7,7 @@ import Alert from './ui/Alert';
 import GTranslateProvider from './ui/GTranslateProvider';
 import { contextData } from '@/context/AuthContext';
 import { countries } from '@/lib/countries';
+import { apiPut } from '@/utils/api';
 
 // Types for our form sections
 type FormSection = {
@@ -372,12 +373,9 @@ const AccountSetupOnboarding = () => {
       console.log(formData);
 
       // Submit to API
-      const response = await fetch(`${url}/users/update-profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...formData, email: user.email }),
+      const response = await apiPut(`${url}/users/update-profile`, {
+        ...formData,
+        email: user.email,
       });
 
       if (!response.ok) {

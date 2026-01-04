@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { contextData } from '@/context/AuthContext';
 import { Link } from 'react-router-dom';
+import { apiGet } from '@/utils/api';
 
 const RecentTransactions = () => {
   const [transactions, setTransactions] = useState<ITransaction[] | any[]>([]);
@@ -20,7 +21,7 @@ const RecentTransactions = () => {
 
   const fetchUserTransactions = async () => {
     try {
-      const res = await fetch(`${url}/transactions/user/${user.email}`);
+      const res = await apiGet(`${url}/transactions/user/${user.email}`);
       const data = await res.json();
 
       if (res.ok) {

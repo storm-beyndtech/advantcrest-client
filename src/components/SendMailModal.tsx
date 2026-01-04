@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import Alert from './ui/Alert';
+import { apiPost } from '@/utils/api';
 
 export default function SendMailModal({ emails, onClose }: any) {
   const [message, setMessage] = useState('');
@@ -16,16 +17,10 @@ export default function SendMailModal({ emails, onClose }: any) {
     setSuccess(null);
 
     try {
-      const res = await fetch(`${url}/utils/send-mail`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          emails,
-          subject,
-          message,
-        }),
+      const res = await apiPost(`${url}/utils/send-mail`, {
+        emails,
+        subject,
+        message,
       });
 
       const data = await res.json();

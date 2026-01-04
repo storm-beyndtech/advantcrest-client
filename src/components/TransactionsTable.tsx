@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { contextData } from '@/context/AuthContext';
 import { ITransaction } from '@/types/transaction';
+import { apiGet } from '@/utils/api';
 
 const TransactionsTable = () => {
   const [transactions, setTransactions] = useState<ITransaction[] | any[]>([]);
@@ -19,7 +20,7 @@ const TransactionsTable = () => {
 
   const fetchUserTransactions = async () => {
     try {
-      const res = await fetch(`${url}/transactions/user/${user.email}`);
+      const res = await apiGet(`${url}/transactions/user/${user.email}`);
       const data = await res.json();
 
       if (res.ok) {
@@ -194,4 +195,3 @@ const TransactionsTable = () => {
 };
 
 export default TransactionsTable;
-

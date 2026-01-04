@@ -9,6 +9,7 @@ import {
   RefreshCw,
   Shield,
 } from 'lucide-react';
+import { apiGet, apiPut } from '@/utils/api';
 
 type KycSubmission = {
   _id: string;
@@ -45,7 +46,7 @@ export default function KycApproval() {
     const fetchKycSubmissions = async () => {
       try {
         setFetching(true);
-        const res = await fetch(`${url}/kycs`);
+        const res = await apiGet(`${url}/kycs`);
         const data = await res.json();
         setKycSubmissions(data || []);
         setFilteredSubmissions(data || []);
@@ -134,11 +135,7 @@ export default function KycApproval() {
     email: string,
   ) => {
     try {
-      const res = await fetch(`${url}/kycs`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, kyc: submissionId }),
-      });
+      const res = await apiPut(`${url}/kycs`, { email, kyc: submissionId });
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -179,13 +176,9 @@ export default function KycApproval() {
           );
           if (!submission) return;
 
-          const res = await fetch(`${url}/kycs`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: submission.email,
-              kyc: submissionId,
-            }),
+          const res = await apiPut(`${url}/kycs`, {
+            email: submission.email,
+            kyc: submissionId,
           });
 
           if (!res.ok) {

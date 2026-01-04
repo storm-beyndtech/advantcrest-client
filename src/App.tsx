@@ -2,7 +2,7 @@ import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 
 //importing pages
 import Home from './pages/Home';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import PageLoader from './components/PageLoader';
 import { contextData } from './context/AuthContext';
 import MaintenancePage from './pages/MaintenancePage';
@@ -75,6 +75,7 @@ import TradersPage from './pages/Dashboard/TradersPage';
 import CopyTraderErrorModal from './components/CopyTraderErrorModal';
 import { useNavigate } from 'react-router-dom';
 import { Trader } from './types/types';
+import { apiGet, apiPut } from './utils/api';
 import TradingHours from './pages/markets/TradingHours';
 import WhyChooseUs from './pages/company/WhyChooseUs';
 import TermsAndConditions from './pages/TermsAndConditions';
@@ -97,8 +98,8 @@ function App() {
     location.pathname.includes('/admin') ||
     location.pathname.includes('/login') ||
     location.pathname.includes('/register') ||
-    location.pathname.includes('/account-setup');
-    location.pathname.includes('/password-reset');
+    location.pathname.includes('/account-setup') ||
+    location.pathname.includes('/verify-otp');
   const { fetching, user, fetchUser } = contextData();
   const { maintenanceData, loading: maintenanceLoading } = useMaintenanceMode();
   const [assetsLoaded, setAssetsLoaded] = useState(false);
@@ -114,7 +115,7 @@ function App() {
 
   const fetchTraders = async () => {
     try {
-      const res = await fetch(`${url}/trader`);
+      const res = await apiGet(`${url}/trader/public`, false);
       if (!res.ok) throw new Error('Failed to fetch traders');
       const data = await res.json();
       setTraders(data || []);
@@ -135,16 +136,10 @@ function App() {
         return false;
       }
 
-      const response = await fetch(`${url}/users/update-user-trader`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          traderId: trader._id,
-          action,
-          userId: user._id,
-        }),
+      const response = await apiPut(`${url}/users/update-user-trader`, {
+        traderId: trader._id,
+        action,
+        userId: user._id,
       });
 
       if (response.ok) {
@@ -200,7 +195,7 @@ function App() {
           {isPrivateRoute ? (
             <meta
               name="viewport"
-              content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+              content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
             />
           ) : (
             <meta name="viewport" content="width=1280, user-scalable=yes" />

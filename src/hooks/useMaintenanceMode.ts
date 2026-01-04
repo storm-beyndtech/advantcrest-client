@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { apiGet } from '@/utils/api';
 
 interface MaintenanceModeData {
   enabled: boolean;
@@ -20,7 +21,7 @@ export const useMaintenanceMode = () => {
   const fetchMaintenanceStatus = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${url}/utils`);
+      const response = await apiGet(`${url}/utils`, false);
       const data = await response.json();
       
       if (response.ok) {

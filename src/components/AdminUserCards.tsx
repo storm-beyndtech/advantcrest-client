@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { PiUsersThreeThin } from 'react-icons/pi';
+import { apiGet } from '@/utils/api';
 
 export default function AdminUserCards() {
   const [users, setUsers] = useState<any>(0);
@@ -8,7 +9,7 @@ export default function AdminUserCards() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(`${url}/users`);
+      const res = await apiGet(`${url}/users`);
       const data = await res.json();
 
       if (res.ok) {

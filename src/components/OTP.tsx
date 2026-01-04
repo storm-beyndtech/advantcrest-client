@@ -4,6 +4,7 @@ import logo from '../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import DarkModeSwitcher from '@/components/Layouts/DarkModeSwitcher';
 import { contextData } from '@/context/AuthContext';
+import { apiPost } from '@/utils/api';
 
 // OTP Page Types
 export type OTPPageType =
@@ -281,13 +282,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
 
       console.log('Submitting OTP:', payload);
       // Placeholder for actual API call
-      const response = await fetch(`${url}/users/verify-otp`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await apiPost(`${url}/users/verify-otp`, payload, false);
 
       const data = await response.json();
 
@@ -336,13 +331,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({
       };
 
       // Placeholder for actual API call
-      const response = await fetch(`${url}/users/resend-otp`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(resendData),
-      });
+      const response = await apiPost(`${url}/users/resend-otp`, resendData, false);
 
       if (!response.ok) {
         throw new Error('Failed to resend verification code.');

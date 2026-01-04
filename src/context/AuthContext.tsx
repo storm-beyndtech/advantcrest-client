@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { clearSession, persistSession, withAuthHeaders } from '@/lib/authHeaders';
+import { clearSession, persistSession } from '@/lib/authHeaders';
+import { apiGet } from '@/utils/api';
 
 const AuthContext = createContext<any>(null);
 
@@ -26,12 +27,8 @@ export const AuthProvider = ({ children }: any) => {
     const timeoutId = setTimeout(() => controller.abort(), 20000);
 
     try {
-      const res = await fetch(`${url}/users/${userId}`, {
-        signal: controller.signal,
-        headers: withAuthHeaders(),
-      });
+      const res = await apiGet(`${url}/users/${userId}`);
       const data = await res.json();
-
       if (res.ok) {
         setUser(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));

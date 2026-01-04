@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { contextData } from '@/context/AuthContext';
 import { ChevronDown, Wallet2Icon } from 'lucide-react';
+import { apiPost } from '@/utils/api';
 
 export default function DemoDropdown() {
   const [open, setOpen] = useState(false);
@@ -11,10 +12,8 @@ export default function DemoDropdown() {
   const handleTopUp = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${url}/deposits/reset-demo-balance`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: user.email }),
+      const res = await apiPost(`${url}/deposits/reset-demo-balance`, {
+        email: user.email,
       });
 
       const data = await res.json();

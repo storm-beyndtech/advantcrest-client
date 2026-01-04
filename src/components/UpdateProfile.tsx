@@ -2,6 +2,7 @@ import { contextData } from "@/context/AuthContext";
 import { countries } from "@/lib/countries"
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom"
+import { apiPut } from "@/utils/api";
 
 
 export default function UpdateProfile() {
@@ -47,11 +48,7 @@ export default function UpdateProfile() {
     }
 
     try {
-      const res = await fetch(`${url}/users/update-profile`, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(profileData)
-      })
+      const res = await apiPut(`${url}/users/update-profile`, profileData)
       const data = await res.json()
 
       if (res.ok) {

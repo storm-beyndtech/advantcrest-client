@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { apiGet, apiPut } from '@/utils/api';
 
 interface MaintenanceContextType {
   isMaintenanceMode: boolean;
@@ -20,7 +21,7 @@ export const MaintenanceProvider: React.FC<MaintenanceProviderProps> = ({ childr
 
   const checkMaintenanceStatus = async () => {
     try {
-      const response = await fetch(`${url}/utils/maintenance-status`);
+      const response = await apiGet(`${url}/utils/maintenance-status`, false);
       const data = await response.json();
       
       setIsMaintenanceMode(data.enabled || false);
@@ -34,16 +35,13 @@ export const MaintenanceProvider: React.FC<MaintenanceProviderProps> = ({ childr
 
   const toggleMaintenanceMode = async (enabled: boolean, message?: string): Promise<boolean> => {
     try {
-      const response = await fetch(`${url}/utils/maintenance-mode`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
+      const response = await apiPut(
+        `${url}/utils/maintenance-mode`,
+        { 
           enabled, 
           message: message || "We're currently performing maintenance. Please check back soon." 
-        }),
-      });
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();

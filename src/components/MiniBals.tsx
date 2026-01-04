@@ -1,6 +1,7 @@
 import { contextData } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
 import { Wallet, CreditCard, TrendingUp, BarChart3 } from 'lucide-react';
+import { apiGet } from '@/utils/api';
 
 export default function MiniBals() {
   const [trades, setTrades] = useState([]);
@@ -8,17 +9,23 @@ export default function MiniBals() {
 
   const url = import.meta.env.VITE_REACT_APP_SERVER_URL;
 
-  // Function to fetch trades
+  // Function to fetch trades for the signed-in user/trader
   const fetchTrades = async () => {
     try {
-      const res = await fetch(`${url}/trades`);
+      if (!user?.traderId) {
+        setTrades([]);
+        return;
+      }
+
+      const res = await apiGet(
+        `${url}/trades/user/${user._id}/trader/${user.traderId}`,
+      );
       const data = await res.json();
 
       if (res.ok) {
         const filteredTrades = data.filter(
           (trade: any) => new Date(trade.date) > new Date(user.createdAt),
         );
-
         setTrades(filteredTrades);
       } else {
         throw new Error(data.message);

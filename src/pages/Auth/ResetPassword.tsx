@@ -4,6 +4,7 @@ import Alert from '@/components/ui/Alert';
 import logo from '../../assets/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import DarkModeSwitcher from '@/components/Layouts/DarkModeSwitcher';
+import { apiPost } from '@/utils/api';
 
 // Updated form state interface
 interface ResetPasswordFormState {
@@ -76,13 +77,7 @@ const ResetPassword: React.FC = () => {
     };
 
     try {
-      const response = await fetch(`${url}/users/reset-password`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      });
+      const response = await apiPost(`${url}/users/reset-password`, requestData, false);
 
       const data = await response.json();
 

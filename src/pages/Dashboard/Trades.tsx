@@ -7,6 +7,7 @@ import SmallStockChart from '@/components/SmallStockChart';
 import CopyTraderErrorModal from '@/components/CopyTraderErrorModal';
 import { useNavigate } from 'react-router-dom';
 import { Trader } from '@/types/types';
+import { apiGet, apiPut } from '@/utils/api';
 
 export default function Trades() {
   const [tradeData, setTradeData] = useState<any>([]);
@@ -30,7 +31,7 @@ export default function Trades() {
         return;
       }
 
-      const res = await fetch(`${url}/trades/user/${user._id}/trader/${user.traderId}`);
+      const res = await apiGet(`${url}/trades/user/${user._id}/trader/${user.traderId}`);
       const data = await res.json();
 
       if (res.ok) {
@@ -48,7 +49,7 @@ export default function Trades() {
 
   const fetchTraders = async () => {
     try {
-      const res = await fetch(`${url}/trader`);
+      const res = await apiGet(`${url}/trader/public`, false);
       if (!res.ok) throw new Error('Failed to fetch traders');
       const data = await res.json();
       setTraders(data || []);
@@ -69,16 +70,10 @@ export default function Trades() {
         return false;
       }
 
-      const response = await fetch(`${url}/users/update-user-trader`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          traderId: trader._id,
-          action,
-          userId: user._id,
-        }),
+      const response = await apiPut(`${url}/users/update-user-trader`, {
+        traderId: trader._id,
+        action,
+        userId: user._id,
       });
 
       if (response.ok) {

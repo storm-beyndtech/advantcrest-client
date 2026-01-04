@@ -1,210 +1,243 @@
-import { useEffect, useState } from 'react';
-import PageLoader from '@/components/PageLoader';
-import Alert from '@/components/ui/Alert';
+import { useEffect, useMemo, useState } from 'react';
+import { RefreshCcw, Search, Filter } from 'lucide-react';
+import { contextData } from '@/context/AuthContext';
+import { apiGet } from '@/utils/api';
 
-type ActivityLog = {
+interface ActivityLog {
   _id: string;
   actorEmail?: string;
   actorRole?: string;
   action: string;
   targetCollection?: string;
   targetId?: string;
+  metadata?: Record<string, any>;
   ipAddress?: string;
   userAgent?: string;
   location?: {
     city?: string;
     region?: string;
     country?: string;
+    lat?: number;
+    lng?: number;
   };
   createdAt: string;
-  metadata?: Record<string, any>;
-};
+}
 
-const ACTION_LABELS: Record<string, string> = {
-  admin_login: 'Admin Login',
-  admin_create_trader: 'Trader Created',
-  admin_update_trader: 'Trader Updated',
-  admin_delete_trader: 'Trader Deleted',
-  admin_update_profile: 'User Profile Edited',
-  admin_update_user_trader: 'User Trader Mapping Edited',
-  admin_bulk_delete_users: 'Bulk User Delete',
-  admin_approve_kyc: 'KYC Approved',
-  admin_create_trade: 'Trade Created',
-  admin_update_trade: 'Trade Updated',
-  admin_delete_trade: 'Trade Deleted',
-  admin_update_util: 'Settings Updated',
-  admin_update_maintenance_mode: 'Maintenance Updated',
-  admin_send_mail: 'Bulk Mail Sent',
-  update_deposit_status: 'Deposit Status Updated',
-  update_withdrawal_status: 'Withdrawal Status Updated',
-  update_transaction: 'Transaction Updated',
-  delete_transaction: 'Transaction Deleted',
-};
-
-export default function ActivityLogs() {
+const ActivityLogs = () => {
+  const { user } = contextData();
   const [logs, setLogs] = useState<ActivityLog[]>([]);
-  const [filtered, setFiltered] = useState<ActivityLog[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
-  const [actionFilter, setActionFilter] = useState<string>('all');
-  const url = import.meta.env.VITE_REACT_APP_SERVER_URL;
+  const [actionFilter, setActionFilter] = useState('');
+  const [limit, setLimit] = useState(50);
+  const serverUrl = import.meta.env.VITE_REACT_APP_SERVER_URL;
 
   const fetchLogs = async () => {
+    if (!user?.isAdmin) return;
     setLoading(true);
     setError(null);
     try {
-      const params = new URLSearchParams({ limit: '200' });
-      const res = await fetch(`${url}/activity-logs?${params.toString()}`);
+      const params = new URLSearchParams({ limit: String(limit) });
+      if (actionFilter) params.append('action', actionFilter);
+      const res = await apiGet(
+        `${serverUrl}/activity-logs?${params.toString()}`,
+      );
       const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || 'Failed to load activity logs');
-      }
-      const items = data.logs || [];
-      setLogs(items);
-      setFiltered(items);
+      if (!res.ok)
+        throw new Error(data.message || 'Failed to fetch activity logs');
+      setLogs(data.logs || []);
     } catch (err: any) {
-      setError(err.message || 'Failed to load activity logs');
+      setError(err.message || 'Unable to load logs');
     } finally {
       setLoading(false);
     }
   };
 
-  const uniqueActions = Array.from(
-    new Set(
-      logs
-        .map((log) => log.action)
-        .filter(Boolean)
-        .sort(),
-    ),
-  );
-
-  useEffect(() => {
-    const searchValue = search.toLowerCase();
-    const next = logs.filter((log) => {
-      const matchesAction = actionFilter === 'all' || log.action === actionFilter;
-      const haystack = [
-        log.actorEmail,
-        log.targetCollection,
-        log.targetId,
-        log.ipAddress,
-        log.location?.city,
-        log.location?.country,
-        ACTION_LABELS[log.action] || log.action,
-      ]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-      const matchesSearch = haystack.includes(searchValue);
-      return matchesAction && matchesSearch;
-    });
-    setFiltered(next);
-  }, [logs, search, actionFilter]);
-
   useEffect(() => {
     fetchLogs();
-  }, []);
+  }, [actionFilter, limit]);
 
-  if (loading) return <PageLoader />;
+  const filteredLogs = useMemo(() => {
+    if (!search) return logs;
+    const term = search.toLowerCase();
+    return logs.filter((log) => {
+      return (
+        log.action.toLowerCase().includes(term) ||
+        (log.actorEmail || '').toLowerCase().includes(term) ||
+        (log.targetCollection || '').toLowerCase().includes(term) ||
+        (log.targetId || '').toLowerCase().includes(term)
+      );
+    });
+  }, [logs, search]);
 
-  if (error) return <Alert type="error" message={error} />;
+  const actionOptions = useMemo(() => {
+    return Array.from(new Set(logs.map((log) => log.action))).sort();
+  }, [logs]);
+
+  const renderLocation = (log: ActivityLog) => {
+    if (!log.location) return 'Unknown location';
+    const parts = [
+      log.location.city,
+      log.location.region,
+      log.location.country,
+    ].filter(Boolean);
+    return parts.join(', ') || 'Unknown location';
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100 text-slate-900 dark:from-[#0f1624] dark:via-[#0b1220] dark:to-[#0b1220] dark:text-slate-100 px-4 py-6 sm:px-6 lg:px-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-6">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Admin Activity</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Every admin-surface action with IP, location, and metadata.
+          <h1 className="text-lg font-semibold leading-tight">Activity</h1>
+          <p className="text-xs text-slate-600 dark:text-slate-400">
+            Security events with IP, device, and location.
           </p>
         </div>
-        <div className="flex w-full flex-col gap-2 sm:flex-row sm:flex-wrap md:justify-end">
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search email, target, IP..."
-            className="w-full sm:w-64 rounded-lg border border-gray-300 bg-white dark:border-gray-700 dark:bg-[#0f1624] px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 focus:border-sky-500 focus:outline-none"
-          />
-          <select
-            value={actionFilter}
-            onChange={(e) => setActionFilter(e.target.value)}
-            className="w-full sm:w-48 rounded-lg border border-gray-300 bg-white dark:border-gray-700 dark:bg-[#0f1624] px-3 py-2 text-sm text-gray-100 focus:border-sky-500 focus:outline-none"
-          >
-            <option value="all">All actions</option>
-            {uniqueActions.map((action) => (
-              <option key={action} value={action}>
-                {ACTION_LABELS[action] || action}
-              </option>
-            ))}
-          </select>
+
+        <div className="flex flex-wrap gap-3 w-full md:w-auto">
+          <div className="flex flex-1 min-w-[200px] items-center gap-2 rounded-lg bg-white/90 px-3 py-2 border border-slate-200 shadow-sm dark:bg-white/5 dark:border-white/10">
+            <Search className="w-4 h-4 text-slate-400" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search logs"
+              className="w-full bg-transparent text-sm outline-none placeholder:text-slate-400"
+            />
+          </div>
+          <div className="flex items-center gap-2 rounded-lg bg-white/90 px-3 py-2 border border-slate-200 shadow-sm dark:bg-white/5 dark:border-white/10">
+            <Filter className="w-4 h-4 text-slate-400" />
+            <select
+              value={actionFilter}
+              onChange={(e) => setActionFilter(e.target.value)}
+              className="bg-transparent text-sm outline-none"
+            >
+              <option value="">All</option>
+              {actionOptions.map((action) => (
+                <option
+                  key={action}
+                  value={action}
+                  className="bg-white text-slate-900 dark:bg-slate-800 dark:text-slate-100"
+                >
+                  {action}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center gap-2 rounded-lg bg-white/90 px-3 py-2 border border-slate-200 shadow-sm dark:bg-white/5 dark:border-white/10">
+            <span className="text-xs text-slate-500 dark:text-slate-300">
+              Limit
+            </span>
+            <select
+              value={limit}
+              onChange={(e) => setLimit(Number(e.target.value))}
+              className="bg-transparent text-sm outline-none"
+            >
+              {[25, 50, 100, 150, 200].map((value) => (
+                <option
+                  key={value}
+                  value={value}
+                  className="bg-white text-slate-900 dark:bg-slate-800 dark:text-slate-100"
+                >
+                  {value}
+                </option>
+              ))}
+            </select>
+          </div>
           <button
             onClick={fetchLogs}
-            className="w-full sm:w-auto rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white/90 px-3 py-2 text-sm font-medium text-slate-800 shadow-sm transition hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:hover:border-white/30"
           >
+            <RefreshCcw
+              className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`}
+            />
             Refresh
           </button>
         </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-        {filtered.length === 0 && (
-          <div className="col-span-full">
-            <Alert type="error" message="No activity found with current filters." />
+      {error && (
+        <div className="mb-4 rounded-lg border border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-transparent">
+          {error}
+        </div>
+      )}
+
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+        {loading && (
+          <div className="col-span-full text-center opacity-60">
+            Loading activity logs...
           </div>
         )}
-        {filtered.map((log) => (
+        {!loading && filteredLogs.length === 0 && (
+          <div className="col-span-full text-center opacity-60">
+            No activity found for the selected filters.
+          </div>
+        )}
+
+        {filteredLogs.map((log) => (
           <div
             key={log._id}
-            className="min-w-0 rounded-xl border border-gray-300 bg-white p-4 shadow-lg dark:border-gray-800 dark:bg-gradient-to-br dark:from-[#0f1624] dark:to-[#0b1220]"
+            className="rounded-xl bg-white/90 border border-slate-200 p-4 shadow-md flex flex-col gap-3 break-words backdrop-blur dark:bg-white/5 dark:border-white/10 dark:shadow-[0_10px_40px_rgba(0,0,0,0.35)]"
           >
-            <div className="flex items-start justify-between gap-2">
-              <div className="space-y-1">
-                <div className="text-xs uppercase tracking-wide text-sky-600 dark:text-sky-400">
-                  {ACTION_LABELS[log.action] || log.action}
-                </div>
-                <div className="text-sm text-gray-900 dark:text-gray-100">{log.actorEmail || 'Unknown'}</div>
-                <div className="text-2xs text-gray-500">{log.actorRole || 'user'}</div>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.14em] text-amber-500 dark:text-amber-400">
+                  {log.action}
+                </p>
+                <p className="text-sm font-semibold break-words">
+                  {log.actorEmail || 'Unknown actor'}{' '}
+                  <span className="text-slate-500 dark:text-slate-400">
+                    ({log.actorRole || 'user'})
+                  </span>
+                </p>
               </div>
-              <div className="text-right text-2xs text-gray-500 dark:text-gray-400">
+              <span className="text-xs text-slate-500 dark:text-slate-400">
                 {new Date(log.createdAt).toLocaleString()}
-              </div>
+              </span>
             </div>
 
-            <div className="mt-3 grid grid-cols-2 gap-2 text-2xs text-gray-500 dark:text-gray-400">
-              <div>
-              <div className="text-gray-500">Target</div>
-                <div className="text-gray-800 break-words dark:text-gray-200">
-                  <div className="truncate" title={`${log.targetCollection || '-'} ${log.targetId || ''}`}>
-                    {log.targetCollection || '-'}
-                  </div>
-                  <div className="text-2xs text-gray-500 break-words">
-                    {log.targetId || ''}
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="text-gray-500">IP / Location</div>
-                <div className="text-gray-800 dark:text-gray-200">
+            <div className="space-y-2 text-sm">
+              <p className="truncate">
+                <span className="text-slate-500 dark:text-slate-400">
+                  Target:
+                </span>{' '}
+                <span className="font-medium break-words">
+                  {log.targetCollection || '-'} {log.targetId || ''}
+                </span>
+              </p>
+              <p className="flex flex-wrap gap-1">
+                <span className="text-slate-500 dark:text-slate-400">IP:</span>
+                <span className="font-mono text-xs bg-slate-100 px-2 py-1 rounded-md dark:bg-slate-800 dark:text-slate-200">
                   {log.ipAddress || 'n/a'}
-                  <br />
-                  {[log.location?.city, log.location?.region, log.location?.country]
-                    .filter(Boolean)
-                    .join(', ')}
-                </div>
-              </div>
+                </span>
+              </p>
+              <p className="text-xs">
+                <span className="text-slate-500 dark:text-slate-400">
+                  Location:
+                </span>{' '}
+                {renderLocation(log)}
+              </p>
+              <p className="text-xs break-words">
+                <span className="text-slate-500 dark:text-slate-400">UA:</span>{' '}
+                <span className="whitespace-pre-wrap">
+                  {log.userAgent || 'n/a'}
+                </span>
+              </p>
             </div>
 
-            {log.metadata && (
-              <div className="mt-3 rounded-lg bg-gray-100 p-3 text-2xs text-gray-700 dark:bg-[#111a2a] dark:text-gray-300">
-                <div className="text-gray-500 mb-1">Metadata</div>
-                <pre className="max-h-32 overflow-auto whitespace-pre-wrap break-words text-gray-800 dark:text-gray-200">
-                  {JSON.stringify(log.metadata, null, 2)}
-                </pre>
+            <div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                Metadata
+              </p>
+              <div className="rounded-lg bg-slate-100 border border-slate-200 p-3 text-xs max-h-32 overflow-y-auto whitespace-pre-wrap break-words dark:bg-slate-800 dark:border-slate-700">
+                {log.metadata ? JSON.stringify(log.metadata, null, 2) : '-'}
               </div>
-            )}
+            </div>
           </div>
         ))}
       </div>
     </div>
   );
-}
+};
+
+export default ActivityLogs;

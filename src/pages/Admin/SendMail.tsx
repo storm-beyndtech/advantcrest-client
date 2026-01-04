@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import PageLoader from '@/components/PageLoader';
 import { contextData } from '@/context/AuthContext';
 import SendMailModal from '@/components/SendMailModal';
+import { apiGet } from '@/utils/api';
 
 type User = {
   _id: string;
@@ -28,7 +29,7 @@ export default function SendMail() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(`${url}/users`);
+      const res = await apiGet(`${url}/users`);
       const data = await res.json();
 
       if (res.ok) {

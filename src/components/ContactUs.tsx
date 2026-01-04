@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Alert from './ui/Alert';
 import { Loader } from 'lucide-react';
+import { apiPost } from '@/utils/api';
 
 interface FormState {
   name: string;
@@ -87,11 +88,7 @@ const ContactForm: React.FC = () => {
     setIsSubmitting(true);
     try {
       const url = import.meta.env.VITE_REACT_APP_SERVER_URL;
-      const res = await fetch(`${url}/utils/contact-us`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      const res = await apiPost(`${url}/utils/contact-us`, formData, false);
 
       // Handle non-OK responses
       if (!res.ok) {

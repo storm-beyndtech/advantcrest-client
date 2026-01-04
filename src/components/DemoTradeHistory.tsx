@@ -8,6 +8,7 @@ import {
   BarChart3,
 } from 'lucide-react';
 import { contextData } from '@/context/AuthContext';
+import { apiGet } from '@/utils/api';
 
 // Updated TypeScript interface to match new schema
 interface DemoTrade {
@@ -33,7 +34,7 @@ const DemoTradeHistory = ({ changes }: any) => {
   const fetchTrades = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${url}/trades/demo-trades/${user.email}`);
+      const res = await apiGet(`${url}/trades/demo-trades/${user.email}`);
       const data = await res.json();
 
       if (res.ok) {

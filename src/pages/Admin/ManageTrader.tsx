@@ -3,6 +3,7 @@ import TraderForm from '@/components/TraderForm';
 import TraderList from '@/components/TraderList';
 import { Trader } from '@/types/types';
 import React, { useState, useEffect } from 'react';
+import { apiGet, apiPost, apiPut, apiDelete } from '@/utils/api';
 
 const ManageTrader: React.FC = () => {
   const [traders, setTraders] = useState<Trader[]>([]);
@@ -20,7 +21,7 @@ const ManageTrader: React.FC = () => {
   const fetchTraders = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${url}/trader`);
+      const response = await apiGet(`${url}/trader`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch traders');
@@ -51,9 +52,7 @@ const ManageTrader: React.FC = () => {
     if (!window.confirm('Are you sure you want to delete this trader?')) return;
 
     try {
-      const response = await fetch(`${url}/trader/${id}`, {
-        method: 'DELETE',
-      });
+      const response = await apiDelete(`${url}/trader/${id}`);
 
       if (!response.ok) {
         throw new Error('Failed to delete trader');
@@ -86,16 +85,10 @@ const ManageTrader: React.FC = () => {
 
       if (editingTrader) {
         // Update existing trader
-        response = await fetch(`${url}/trader/${editingTrader._id}`, {
-          method: 'PUT',
-          body: submitData,
-        });
+        response = await apiPut(`${url}/trader/${editingTrader._id}`, submitData);
       } else {
         // Create new trader
-        response = await fetch(`${url}/trader/create`, {
-          method: 'POST',
-          body: submitData,
-        });
+        response = await apiPost(`${url}/trader/create`, submitData);
       }
 
       if (!response.ok) {

@@ -3,6 +3,7 @@ import dummyQr from '../assets/dummyQr.png';
 import authImg from '../assets/authMFA.png';
 import { contextData } from '@/context/AuthContext';
 import Alert from './ui/Alert';
+import { apiGet, apiPost } from '@/utils/api';
 
 export default function TwoFactorAuth() {
   const [qrCodeSrc, setQrCodeSrc] = useState<null | string>(null);
@@ -16,7 +17,7 @@ export default function TwoFactorAuth() {
 
   const fetchQrCode = async () => {
     try {
-      const res = await fetch(`${url}/users/getQrCode`);
+      const res = await apiGet(`${url}/users/getQrCode`);
       const data = await res.json();
 
       if (res.ok) {
@@ -37,10 +38,10 @@ export default function TwoFactorAuth() {
     setSuccess(false);
 
     try {
-      const res = await fetch(`${url}/users/verifyToken`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: user.email, token, secret }),
+      const res = await apiPost(`${url}/users/verifyToken`, {
+        email: user.email,
+        token,
+        secret,
       });
       const data = await res.json();
       console.log(data);

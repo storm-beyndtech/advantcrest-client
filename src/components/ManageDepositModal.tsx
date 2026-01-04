@@ -3,6 +3,7 @@ import { GrClose } from 'react-icons/gr';
 import EditTransaction from './EditTransaction';
 import Alert from './ui/Alert';
 import { ITransaction } from '@/types/transaction';
+import { apiPut } from '@/utils/api';
 
 export default function ManageDepositModal({
   toggleModal,
@@ -34,14 +35,10 @@ export default function ManageDepositModal({
     else setFailedLoading(true);
 
     try {
-      const res = await fetch(`${url}/deposits/${deposit?._id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          status,
-          email: deposit?.user.email,
-          amount: deposit?.amount,
-        }),
+      const res = await apiPut(`${url}/deposits/${deposit?._id}`, {
+        status,
+        email: deposit?.user.email,
+        amount: deposit?.amount,
       });
 
       const data = await res.json();
@@ -211,4 +208,3 @@ export default function ManageDepositModal({
     )
   );
 }
-

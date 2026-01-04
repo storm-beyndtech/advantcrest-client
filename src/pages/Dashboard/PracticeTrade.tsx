@@ -4,6 +4,7 @@ import RecentDemoTrades from '@/components/RecentDemoTrades';
 import { contextData } from '@/context/AuthContext';
 import DemoDropdown from '@/components/ui/DemoDropdown';
 import Alert from '@/components/ui/Alert';
+import { apiPost } from '@/utils/api';
 
 interface DropdownOption {
   value: string | number;
@@ -262,13 +263,7 @@ const PracticeTrade: FC = () => {
         duration: timeframe,
       };
 
-      const res = await fetch(`${url}/trades/create-demo-trade`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(tradeData),
-      });
+      const res = await apiPost(`${url}/trades/create-demo-trade`, tradeData);
 
       const data = await res.json();
 
