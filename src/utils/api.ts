@@ -17,7 +17,9 @@ export const apiGet = (url: string, requiresAuth = true) =>
 
 export const apiPost = (url: string, data?: any, requiresAuth = true) => {
 	const isFormData = data instanceof FormData;
-	const headers = isFormData ? {} : { "Content-Type": "application/json" };
+	const headers: Record<string, string> | undefined = isFormData
+		? undefined
+		: { "Content-Type": "application/json" };
 	return apiFetch(url, {
 		method: "POST",
 		headers,
@@ -28,7 +30,9 @@ export const apiPost = (url: string, data?: any, requiresAuth = true) => {
 
 export const apiPut = (url: string, data?: any, requiresAuth = true) => {
 	const isFormData = data instanceof FormData;
-	const headers = isFormData ? {} : { "Content-Type": "application/json" };
+	const headers: Record<string, string> | undefined = isFormData
+		? undefined
+		: { "Content-Type": "application/json" };
 	return apiFetch(url, {
 		method: "PUT",
 		headers,
