@@ -2,7 +2,7 @@ const getAuthToken = () => localStorage.getItem("authToken");
 
 export const apiFetch = (
 	url: string,
-	{ requiresAuth = true, headers = {}, ...rest }: RequestInit & { requiresAuth?: boolean } = {},
+	{ requiresAuth = true, headers, ...rest }: RequestInit & { requiresAuth?: boolean } = {},
 ) => {
 	const h = new Headers(headers);
 	if (requiresAuth) {
@@ -43,7 +43,11 @@ export const apiPut = (url: string, data?: any, requiresAuth = true) => {
 
 export const apiDelete = (url: string, requiresAuth = true, body?: any) => {
 	const isFormData = body instanceof FormData;
-	const headers = isFormData ? {} : body ? { "Content-Type": "application/json" } : {};
+	const headers: Record<string, string> | undefined = isFormData
+		? undefined
+		: body
+			? { "Content-Type": "application/json" }
+			: undefined;
 	return apiFetch(url, {
 		method: "DELETE",
 		headers,
